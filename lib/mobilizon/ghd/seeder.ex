@@ -37,12 +37,8 @@ defmodule Mobilizon.GHD.Seeder do
 
     case Users.get_user_by_email(email) do
       {:ok, %User{} = user} ->
-        if user.role != :administrator do
-          {:ok, user} = Users.update_user(user, %{role: :administrator})
-          user
-        else
-          user
-        end
+        {:ok, user} = Users.update_user(user, %{role: :administrator, locale: "tr"})
+        user
 
       {:error, :user_not_found} ->
         {:ok, %User{} = user} =
@@ -50,6 +46,7 @@ defmodule Mobilizon.GHD.Seeder do
             email: email,
             password: password,
             role: :administrator,
+            locale: "tr",
             confirmed_at: DateTime.utc_now() |> DateTime.truncate(:second),
             confirmation_sent_at: nil,
             confirmation_token: nil
@@ -59,7 +56,7 @@ defmodule Mobilizon.GHD.Seeder do
 
       {:error, :user_pending} ->
         {:ok, user} = Users.get_user_by_email(email, unconfirmed: true)
-        {:ok, user} = Users.update_user(user, %{role: :administrator})
+        {:ok, user} = Users.update_user(user, %{role: :administrator, locale: "tr"})
         user
     end
   end
