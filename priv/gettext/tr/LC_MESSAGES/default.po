@@ -1619,7 +1619,8 @@ msgstr ""
 #, elixir-format, elixir-autogen
 msgid "You have one pending attendance request to process for the following event:"
 msgid_plural "You have %{number_participation_requests} attendance requests to process for the following event:"
-msgstr "Aşağıdaki ilan için değerlendirmeniz gereken bir başvuru var:"
+msgstr[0] "Aşağıdaki ilan için değerlendirmeniz gereken bir başvuru var:"
+msgstr[1] "Aşağıdaki ilan için değerlendirmeniz gereken %{number_participation_requests} başvuru var:"
 
 #: lib/web/templates/email/admin_user_role_changed.html.heex:18
 #: lib/web/templates/email/admin_user_role_changed.text.eex:1
