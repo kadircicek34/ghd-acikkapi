@@ -363,7 +363,7 @@ const { t } = useI18n({ useScope: "global" });
 const { event } = useFetchEvent(GHD_EVENT_UUID);
 
 useHead({
-  title: computed(() => t("GHD Açık Kapı")),
+  title: computed(() => "Hukuk Öğrencileri ve Yeni Mezunlar İçin Misafirlik"),
 });
 
 const eventDescription = computed(
