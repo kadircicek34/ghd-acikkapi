@@ -237,7 +237,7 @@ msgstr "Bu kullanıcı şifresini sıfırlayamıyor"
 #: lib/graphql/resolvers/user.ex:93
 #, elixir-autogen, elixir-format
 msgid "This user has been disabled"
-msgstr "Bu kullanıcı devre dışı bırakıldı"
+msgstr "Hesabınız devre dışı bırakılmış."
 
 #: lib/graphql/resolvers/user.ex:324
 #: lib/graphql/resolvers/user.ex:329
@@ -1439,7 +1439,7 @@ msgstr ""
 #: lib/graphql/error.ex:113
 #, elixir-autogen, elixir-format
 msgid "User pending"
-msgstr ""
+msgstr "Üyelik başvurunuz yönetici onayı bekliyor. Onaylandığında giriş yapabilirsiniz."
 
 #: lib/graphql/resolvers/feed_token.ex:82
 #, elixir-autogen, elixir-format, fuzzy

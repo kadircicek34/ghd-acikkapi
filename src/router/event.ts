@@ -33,7 +33,7 @@ export const eventRoutes: RouteRecordRaw[] = [
     name: EventRouteName.EVENT_CALENDAR,
     component: eventCalendar,
     meta: {
-      requiredAuth: false,
+      requiredAuth: true,
     },
   },
   {
@@ -93,19 +93,14 @@ export const eventRoutes: RouteRecordRaw[] = [
     name: EventRouteName.EVENT,
     component: event,
     props: true,
-    meta: { requiredAuth: false, announcer: { skip: true } },
+    meta: { requiredAuth: true, announcer: { skip: true } },
   },
   {
     path: "/events/:uuid/participate",
-    name: EventRouteName.EVENT_PARTICIPATE_LOGGED_OUT,
-    component: () =>
-      import("../components/Participation/UnloggedParticipation.vue"),
-    props: true,
-    meta: {
-      announcer: {
-        message: (): string => t("Unlogged participation") as string,
-      },
-    },
+    redirect: (to: RouteLocationNormalized) => ({
+      name: EventRouteName.EVENT,
+      params: { uuid: to.params.uuid },
+    }),
   },
   {
     path: "/events/:uuid/participate/with-account",
@@ -113,6 +108,7 @@ export const eventRoutes: RouteRecordRaw[] = [
     component: () =>
       import("../components/Participation/ParticipationWithAccount.vue"),
     meta: {
+      requiredAuth: true,
       announcer: {
         message: (): string => t("Participation with account") as string,
       },
@@ -121,15 +117,10 @@ export const eventRoutes: RouteRecordRaw[] = [
   },
   {
     path: "/events/:uuid/participate/without-account",
-    name: EventRouteName.EVENT_PARTICIPATE_WITHOUT_ACCOUNT,
-    component: () =>
-      import("../components/Participation/ParticipationWithoutAccount.vue"),
-    meta: {
-      announcer: {
-        message: (): string => t("Participation without account") as string,
-      },
-    },
-    props: true,
+    redirect: (to: RouteLocationNormalized) => ({
+      name: EventRouteName.EVENT,
+      params: { uuid: to.params.uuid },
+    }),
   },
   {
     path: "/participation/email/confirm/:token",
@@ -161,7 +152,7 @@ export const eventRoutes: RouteRecordRaw[] = [
     component: () => import("@/views/SearchView.vue"),
     props: true,
     meta: {
-      requiredAuth: false,
+      requiredAuth: true,
       announcer: { message: (): string => t("Tag search") as string },
     },
   },

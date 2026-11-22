@@ -45,7 +45,7 @@ export const routes = [
     component: (): Promise<any> => import("@/views/SearchView.vue"),
     props: true,
     meta: {
-      requiredAuth: false,
+      requiredAuth: true,
       announcer: { message: (): string => t("Search") as string },
     },
   },
@@ -63,7 +63,7 @@ export const routes = [
     name: RouteName.CATEGORIES,
     component: (): Promise<any> => import("@/views/CategoriesView.vue"),
     meta: {
-      requiredAuth: false,
+      requiredAuth: true,
       announcer: { message: (): string => t("Categories") as string },
     },
   },

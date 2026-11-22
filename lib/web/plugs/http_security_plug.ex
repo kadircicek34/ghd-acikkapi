@@ -99,8 +99,10 @@ defmodule Mobilizon.Web.Plugs.HTTPSecurityPlug do
       get_csp_config(:connect_src, options)
     ]
 
+    configured_script_src = Config.get([:http_security, :csp_policy, :script_src], []) || []
+
     script_src =
-      if Config.get(:env) == :dev do
+      if Config.get(:env) == :dev or "'unsafe-inline'" in configured_script_src do
         [@script_src, "'unsafe-inline' "]
       else
         [
@@ -114,12 +116,23 @@ defmodule Mobilizon.Web.Plugs.HTTPSecurityPlug do
 
     script_src = [script_src] ++ [get_csp_config(:script_src, options)]
 
+    configured_style_src = Config.get([:http_security, :csp_policy, :style_src], []) || []
+
     style_src =
-      if Config.get(:env) == :dev, do: [@style_src | "'unsafe-inline' "], else: @style_src
+      if Config.get(:env) == :dev or "'unsafe-inline'" in configured_style_src do
+        [@style_src, "'unsafe-inline' "]
+      else
+        @style_src
+      end
 
     style_src = [style_src] ++ [get_csp_config(:style_src, options)]
 
-    style_src = [style_src] ++ ["'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='"]
+    style_src =
+      if Config.get(:env) == :dev or "'unsafe-inline'" in configured_style_src do
+        style_src
+      else
+        style_src ++ ["'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='"]
+      end
 
     font_src = [@font_src] ++ [get_csp_config(:font_src, options)]
 

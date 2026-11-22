@@ -14,8 +14,8 @@
           <p class="mt-6 max-w-2xl text-lg leading-relaxed text-ghd-muted">
             Hukuk öğrencileri ve yeni mezunlar; bir hukuk bürosunda veya
             şirketin hukuk ekibinde yarım günlük misafirliğe başvurabilir.
-            İlanı inceleyin, kısa motivasyon notunuzu yazın, e-posta adresinizi
-            doğrulayın. Başvurunuz dernek tarafından tek tek değerlendirilir.
+            Başvurular yalnızca e-posta doğrulamalı ve yönetici onaylı üyelik
+            hesabıyla alınır. İlanı inceleyin, kısa motivasyon notunuzu yazın.
           </p>
           <div class="mt-8 flex flex-wrap items-center gap-3">
             <router-link class="ghd-btn ghd-btn-primary" :to="GHD_EVENT_PATH">
@@ -30,7 +30,7 @@
             <span class="ghd-tag">3 kişilik kontenjan</span>
             <span class="ghd-tag">E-posta doğrulama</span>
             <span class="ghd-tag">Manuel değerlendirme</span>
-            <span class="ghd-tag">Hesap açmadan başvuru</span>
+            <span class="ghd-tag">Yalnızca onaylı üyeler</span>
           </div>
         </div>
 
@@ -103,7 +103,7 @@
                 >İlanı incele ve başvur</router-link
               >
               <p class="mt-3 text-center text-xs text-ghd-muted">
-                Başvuru için hesap açmanız gerekmez.
+                Başvurular yalnızca onaylı üyeler tarafından yapılır.
               </p>
             </div>
           </div>
@@ -130,10 +130,10 @@
             çalışması ve meslek pratiği hakkında ilk elden fikir edinir.
           </p>
           <p class="mt-4 text-base leading-relaxed text-ghd-muted">
-            Program kontenjanla sınırlıdır. Başvurular e-posta ile doğrulanır
-            ve dernek tarafından manuel olarak değerlendirilir. Onaylanan
-            katılımcılara misafirlik gününe ilişkin bilgiler e-posta ile
-            iletilir.
+            Program kontenjanla sınırlıdır. Üyelik başvuruları e-posta ile
+            doğrulanır ve dernek tarafından manuel olarak değerlendirilir.
+            Onaylanan üyeler ilana başvurabilir; kabul edilen katılımcılara
+            misafirlik gününe ilişkin bilgiler e-posta ile iletilir.
           </p>
         </div>
       </div>
@@ -194,10 +194,10 @@
                 Süreç
               </p>
               <ol class="mt-3 space-y-3 text-sm text-ghd-cream/80">
-                <li>1 · İlanı inceleyin</li>
-                <li>2 · Kısa motivasyon notunuzu yazın</li>
-                <li>3 · E-posta adresinizi doğrulayın</li>
-                <li>4 · Dernek değerlendirmesini bekleyin</li>
+                <li>1 · Üyelik başvurusu oluşturun</li>
+                <li>2 · E-posta adresinizi doğrulayın</li>
+                <li>3 · Yönetici onayını bekleyin</li>
+                <li>4 · İlana başvurun</li>
               </ol>
             </div>
             <div class="border border-ghd-gold/30 bg-ghd-gold/10 p-5">
@@ -219,8 +219,8 @@
           Dört adımda Açık Kapı.
         </h2>
         <p class="mt-4 text-ghd-muted">
-          Hesap açmadan başvurabilirsiniz. Tek ihtiyacınız geçerli bir e-posta
-          adresi ve kısa bir motivasyon notu.
+          Önce e-posta doğrulamalı üyelik başvurunuzu oluşturun. Yönetici
+          onayından sonra giriş yaparak ilana başvurabilirsiniz.
         </p>
       </div>
       <div class="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
@@ -272,10 +272,10 @@
             Dernek üyeliği başvurusu
           </h2>
           <p class="mt-3 text-sm leading-relaxed text-ghd-muted">
-            Global Hukukçular Derneği üyeliği için de e-posta doğrulaması ve
-            yönetici onayı gerekir. Üyelik başvurunuzu oluşturduktan sonra
-            e-postanızdaki bağlantıyı doğrulayın; dernek yönetimi başvurunuzu
-            değerlendirir.
+            Etkinlik başvurusu için onaylı üyelik zorunludur. Üyelik
+            başvurunuzu oluşturun, e-postanızdaki bağlantıyı doğrulayın;
+            dernek yönetimi başvurunuzu değerlendirir. Onaylandığında giriş
+            yapın, ilk girişte profil oluşturun ve ilana başvurun.
           </p>
           <router-link
             class="ghd-btn ghd-btn-outline mt-6"
@@ -283,7 +283,7 @@
             >Üyelik başvurusu</router-link
           >
           <p class="mt-3 text-xs text-ghd-muted">
-            Etkinlik başvurusu için üyelik zorunlu değildir.
+            Etkinlik başvurusu için onaylı üyelik zorunludur.
           </p>
         </div>
       </div>
@@ -333,8 +333,8 @@
           Hukuk pratiğini yerinde görmek için ilk adımı atın.
         </h2>
         <p class="mx-auto mt-4 max-w-xl text-sm text-ghd-cream/75">
-          Başvuru hesap açmadan alınır; e-posta doğrulaması ve dernek onayı ile
-          kesinleşir.
+          Başvurular yalnızca e-posta doğrulamalı ve yönetici onaylı üyelik
+          hesabıyla alınır.
         </p>
         <router-link
           class="ghd-btn ghd-btn-gold mt-7"
@@ -369,7 +369,7 @@ useHead({
 const eventDescription = computed(
   () =>
     event.value?.description ||
-    "<p>Bir hukuk bürosunda veya şirketin hukuk ekibinde yarım günlük misafirlik. Başvurunuzu kısa motivasyon notunuzla birlikte gönderin.</p>"
+    "<p>Bir hukuk bürosunda veya şirketin hukuk ekibinde yarım günlük misafirlik. Başvurular yalnızca onaylı üyeler tarafından yapılır.</p>"
 );
 
 const formattedDate = computed(() => {
@@ -392,27 +392,27 @@ const eventLocation = computed(() => {
 
 const steps = [
   {
-    title: "İlanı inceleyin",
-    body: "Misafirliğin yapılacağı büro veya hukuk ekibi, tarih ve kontenjan bilgilerini ilan sayfasında bulun.",
-  },
-  {
-    title: "Motivasyon notunuzu yazın",
-    body: "Hesap açmadan; adınız, hukuk statünüz ve kısa motivasyon notunuzla başvurunuzu gönderin.",
+    title: "Üyelik başvurusu",
+    body: "E-posta adresiniz, hukuk statünüz ve kısa motivasyonunuzla GHD Açık Kapı üyelik başvurusu oluşturun.",
   },
   {
     title: "E-postanızı doğrulayın",
-    body: "Başvuru sonrası gelen kutunuza gelen bağlantıya tıklayın. Bu adım, başvurunuzun gerçek bir kişiden geldiğini doğrular.",
+    body: "Üyelik başvurunuz sonrası gelen kutunuza gelen bağlantıya tıklayın. Bu adım, başvurunuzun gerçek bir kişiden geldiğini doğrular.",
   },
   {
-    title: "Değerlendirmeyi bekleyin",
-    body: "Dernek başvuruyu inceler. Kabul veya ret kararı e-posta ile bildirilir; kontenjan sınırı uygulanır.",
+    title: "Yönetici onayını bekleyin",
+    body: "Dernek yönetimi üyelik başvurunuzu inceler. Onaylandığında giriş yapabilir ve ilana başvurabilirsiniz.",
+  },
+  {
+    title: "İlana başvurun",
+    body: "Onaydan sonra giriş yapın; ilk girişte profil oluşturun ve ilana başvurun. Kısa motivasyon notunuz dernek tarafından değerlendirilir; kontenjan sınırı uygulanır.",
   },
 ];
 
 const faqs = [
   {
     q: "Başvuru için hesap açmam gerekiyor mu?",
-    a: "Hayır. Açık Kapı başvuruları hesap açmadan, e-posta doğrulaması ve kısa motivasyon notu ile alınır.",
+    a: "Evet. Başvurular yalnızca e-posta doğrulamalı ve yönetici onaylı üyelik hesabıyla alınır. Hesap açmadan başvuru kabul edilmez.",
   },
   {
     q: "Kimler başvurabilir?",

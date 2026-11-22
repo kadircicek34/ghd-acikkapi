@@ -151,29 +151,6 @@
           </div>
         </article>
       </o-table-column>
-      <o-table-column
-        field="metadata.name"
-        label="Ad Soyad"
-        v-slot="props"
-      >
-        <span v-if="props.row.metadata?.name" class="font-semibold">{{
-          props.row.metadata.name
-        }}</span>
-        <span v-else-if="props.row.actor.preferredUsername !== 'anonymous'">{{
-          props.row.actor.name || props.row.actor.preferredUsername
-        }}</span>
-        <span v-else class="text-gray-500">—</span>
-      </o-table-column>
-      <o-table-column
-        field="metadata.lawStatus"
-        label="Hukuk statüsü"
-        v-slot="props"
-      >
-        <tag v-if="props.row.metadata?.lawStatus" variant="info">{{
-          lawStatusLabel(props.row.metadata.lawStatus)
-        }}</tag>
-        <span v-else class="text-gray-500">—</span>
-      </o-table-column>
       <o-table-column field="role" :label="t('Role')" v-slot="props">
         <tag
           variant="primary"
@@ -335,11 +312,6 @@ const participantsExportFormats = useParticipantsExportFormats();
 const ellipsize = (text?: string) =>
   text && text.substring(0, MESSAGE_ELLIPSIS_LENGTH).concat("…");
 
-const lawStatusLabel = (status?: string): string => {
-  if (status === "student") return "Hukuk Fakültesi Öğrencisi";
-  if (status === "graduate") return "Hukuk Fakültesi Mezunu";
-  return "—";
-};
 
 const eventId = computed(() => props.eventId);
 

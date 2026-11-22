@@ -138,21 +138,21 @@ export const groupsRoutes: RouteRecordRaw[] = [
     component: (): Promise<any> => import("@/views/Posts/PostView.vue"),
     props: true,
     name: GroupsRouteName.POST,
-    meta: { requiredAuth: false, announcer: { skip: true } },
+    meta: { requiredAuth: true, announcer: { skip: true } },
   },
   {
     path: "/@:preferredUsername/p",
     component: (): Promise<any> => import("@/views/Posts/ListView.vue"),
     props: true,
     name: GroupsRouteName.POSTS,
-    meta: { requiredAuth: false, announcer: { skip: true } },
+    meta: { requiredAuth: true, announcer: { skip: true } },
   },
   {
     path: "/@:preferredUsername/events",
     component: groupEvents,
     props: true,
     name: GroupsRouteName.GROUP_EVENTS,
-    meta: { requiredAuth: false, announcer: { skip: true } },
+    meta: { requiredAuth: true, announcer: { skip: true } },
   },
   {
     path: "/@:preferredUsername/join",
@@ -160,7 +160,7 @@ export const groupsRoutes: RouteRecordRaw[] = [
       import("@/components/Group/JoinGroupWithAccount.vue"),
     props: true,
     name: GroupsRouteName.GROUP_JOIN,
-    meta: { requiredAuth: false, announcer: { skip: true } },
+    meta: { requiredAuth: true, announcer: { skip: true } },
   },
   {
     path: "/@:preferredUsername/follow",
@@ -168,7 +168,7 @@ export const groupsRoutes: RouteRecordRaw[] = [
       import("@/components/Group/JoinGroupWithAccount.vue"),
     props: true,
     name: GroupsRouteName.GROUP_FOLLOW,
-    meta: { requiredAuth: false, announcer: { skip: true } },
+    meta: { requiredAuth: true, announcer: { skip: true } },
   },
   {
     path: "/@:preferredUsername/timeline",

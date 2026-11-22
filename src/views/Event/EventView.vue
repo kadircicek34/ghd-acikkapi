@@ -36,7 +36,8 @@
           >
             <strong>GHD Açık Kapı başvurusu.</strong>
             Kontenjan sınırlıdır; başvurular e-posta doğrulaması ve dernek
-            tarafından manuel değerlendirme ile alınır. Hesap açmanız gerekmez.
+            tarafından manuel değerlendirme ile alınır. Başvurular yalnızca
+            e-posta doğrulamalı ve yönetici onaylı üyelik hesabıyla alınır.
           </div>
           <div class="flex flex-wrap gap-2 justify-end">
             <div class="flex-1 min-w-[300px]">

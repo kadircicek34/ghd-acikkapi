@@ -53,6 +53,13 @@
             >{{ t("Login") }}</router-link
           >
           <router-link
+            v-if="!currentUser?.isLoggedIn"
+            class="ghd-btn ghd-btn-gold !px-4 !py-2 text-sm"
+            :to="{ name: RouteName.REGISTER }"
+            >Üyelik Başvurusu</router-link
+          >
+          <router-link
+            v-else
             class="ghd-btn ghd-btn-gold !px-4 !py-2 text-sm"
             :to="GHD_EVENT_PATH"
             >Başvur</router-link

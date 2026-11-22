@@ -90,7 +90,7 @@
           <div class="flex-1">
             <h2 class="text-3xl text-ghd-navy font-bold">Açık Kapı ilanı</h2>
             <p class="mb-3 text-sm text-ghd-muted">
-              Hesap açmadan yarım günlük misafirliğe başvurun.
+              Onaylı üyelik hesabınızla yarım günlük misafirliğe başvurun.
             </p>
             <router-link class="ghd-btn ghd-btn-outline" :to="GHD_EVENT_PATH"
               >İlanı incele</router-link

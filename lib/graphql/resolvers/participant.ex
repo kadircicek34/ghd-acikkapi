@@ -120,6 +120,7 @@ defmodule Mobilizon.GraphQL.Resolvers.Participant do
   defp do_actor_join_event(actor, event_id, args) do
     with {:has_event, {:ok, %Event{} = event}} <-
            {:has_event, Events.get_event_with_preload(event_id)},
+         {:motivation_valid, :ok} <- {:motivation_valid, validate_motivation(event, args)},
          {:ok, _activity, participant} <- Participations.join(event, actor, args),
          %Participant{} = participant <-
            participant
@@ -139,6 +140,12 @@ defmodule Mobilizon.GraphQL.Resolvers.Participant do
 
       {:error, :already_participant} ->
         {:error, dgettext("errors", "You are already a participant of this event")}
+
+      {:motivation_valid, {:error, err}} ->
+        {:error, err}
+
+      {:error, err} ->
+        {:error, err}
     end
   end
 
@@ -158,6 +165,25 @@ defmodule Mobilizon.GraphQL.Resolvers.Participant do
   end
 
   defp ensure_capacity_for_acceptance(_event, _old_role, _new_role), do: :ok
+
+  @spec validate_motivation(Event.t(), map()) :: :ok | {:error, String.t()}
+  defp validate_motivation(%Event{join_options: :restricted}, args) do
+    message =
+      args
+      |> Map.get(:message)
+      |> Kernel.||("")
+      |> to_string()
+      |> String.trim()
+
+    if String.length(message) >= 10 do
+      :ok
+    else
+      {:error,
+       dgettext("errors", "Please write a short motivation note (at least 10 characters)")}
+    end
+  end
+
+  defp validate_motivation(_event, _args), do: :ok
 
   @spec validate_application(Event.t(), map()) :: :ok | {:error, String.t()}
   defp validate_application(%Event{join_options: :restricted}, args) do

@@ -61,9 +61,10 @@ defmodule Mobilizon.GHD.Seeder do
     end
   end
 
-  defp ensure_actor(%User{id: user_id}) do
+  defp ensure_actor(%User{id: user_id} = user) do
     case Actors.get_local_actor_by_name(@actor_username) do
       %Actor{} = actor ->
+        Users.update_user_default_actor(user, actor)
         actor
 
       nil ->
@@ -81,6 +82,7 @@ defmodule Mobilizon.GHD.Seeder do
             true
           )
 
+        Users.update_user_default_actor(user, actor)
         actor
     end
   end
@@ -104,9 +106,9 @@ defmodule Mobilizon.GHD.Seeder do
             <li><strong>Kontenjan:</strong> 3 kişi</li>
             <li><strong>Süre:</strong> Yarım gün (yaklaşık 4 saat)</li>
             <li><strong>Kimler başvurabilir:</strong> Hukuk fakültesi öğrencileri ve yeni mezunlar</li>
-            <li><strong>Başvuru:</strong> Hesap açmadan, kısa bir motivasyon notuyla</li>
+            <li><strong>Başvuru:</strong> Onaylı üyelik hesabıyla, kısa bir motivasyon notuyla</li>
           </ul>
-          <p>Başvurunuz önce e-posta ile doğrulanır, ardından dernek tarafından manuel olarak değerlendirilir. Başvuruların onaylanmasıyla kontenjan dolar.</p>
+          <p>Başvurular yalnızca e-posta doğrulamalı ve yönetici onaylı üyelik hesaplarıyla alınır. Üyeliğiniz onaylandıktan sonra ilana başvurabilirsiniz. Başvurular dernek tarafından manuel olarak değerlendirilir.</p>
           """
           |> String.trim(),
           begins_on: begins_on,
@@ -132,7 +134,7 @@ defmodule Mobilizon.GHD.Seeder do
           options: %{
             maximum_attendee_capacity: 3,
             show_remaining_attendee_capacity: true,
-            anonymous_participation: true,
+            anonymous_participation: false,
             timezone: "Europe/Istanbul",
             hide_number_of_participants: false
           },

@@ -1,8 +1,8 @@
 defmodule Mobilizon.GHD.ApplicationFlowTest do
   @moduledoc """
-  End-to-end domain tests for the GHD Açık Kapı application flow:
-  anonymous application, e-mail confirmation, manual approval, rejection and
-  the three-person capacity guard.
+  Domain tests for the GHD Açık Kapı account-only application flow:
+  motivation validation, manual approval, rejection and the three-person
+  capacity guard.
   """
 
   use MobilizonWeb.ConnCase
@@ -18,44 +18,10 @@ defmodule Mobilizon.GHD.ApplicationFlowTest do
   alias Mobilizon.Users
 
   @join_mutation """
-  mutation JoinEvent(
-    $actorId: ID!
-    $eventId: ID!
-    $email: String
-    $message: String
-    $name: String
-    $lawStatus: String
-    $kvkkAccepted: Boolean
-  ) {
-    joinEvent(
-      actorId: $actorId
-      eventId: $eventId
-      email: $email
-      message: $message
-      name: $name
-      lawStatus: $lawStatus
-      kvkkAccepted: $kvkkAccepted
-    ) {
+  mutation JoinEvent($actorId: ID!, $eventId: ID!, $message: String) {
+    joinEvent(actorId: $actorId, eventId: $eventId, message: $message) {
       id
       role
-      metadata {
-        name
-        lawStatus
-        message
-      }
-    }
-  }
-  """
-
-  @confirm_mutation """
-  mutation Confirm($token: String!) {
-    confirmParticipation(confirmationToken: $token) {
-      id
-      role
-      event {
-        id
-        uuid
-      }
     }
   }
   """
@@ -70,18 +36,12 @@ defmodule Mobilizon.GHD.ApplicationFlowTest do
   """
 
   setup %{conn: conn} do
-    clear_config([:anonymous, :participation])
-
-    Config.put([:anonymous, :participation, :allowed], true)
-    Config.put([:anonymous, :participation, :validation, :email, :enabled], true)
-    Config.put([:anonymous, :participation, :validation, :email, :confirmation_required], true)
+    Config.put([:anonymous, :participation, :allowed], false)
     Config.clear_config_cache()
+    on_exit(fn -> Config.clear_config_cache() end)
 
-    on_exit(fn -> clear_config([:anonymous, :participation]) end)
-
-    organizer = insert(:user)
+    organizer = insert(:user, role: :administrator)
     organizer_actor = insert(:actor, user: organizer, name: "GHD Açık Kapı")
-
     Users.update_user_default_actor(organizer, organizer_actor)
 
     event =
@@ -89,7 +49,7 @@ defmodule Mobilizon.GHD.ApplicationFlowTest do
         organizer_actor: organizer_actor,
         join_options: :restricted,
         options: %{
-          anonymous_participation: true,
+          anonymous_participation: false,
           maximum_attendee_capacity: 3,
           show_remaining_attendee_capacity: true
         }
@@ -97,78 +57,81 @@ defmodule Mobilizon.GHD.ApplicationFlowTest do
 
     insert(:participant, event: event, actor: organizer_actor, role: :creator)
 
-    anonymous_actor_id = Config.anonymous_actor_id()
+    applicants =
+      for n <- 1..5 do
+        user = insert(:user)
+        actor = insert(:actor, user: user, name: "Aday #{n}")
+        %{user: user, actor: actor, number: n}
+      end
 
     {:ok,
      conn: conn,
      event: event,
      organizer: organizer,
      organizer_actor: organizer_actor,
-     anonymous_actor_id: anonymous_actor_id}
+     applicants: applicants}
   end
 
-  test "applicant is confirmed, approved and capacity is enforced", %{
+  test "motivation is required for restricted events", %{
+    conn: conn,
+    event: event,
+    applicants: [applicant | _]
+  } do
+    res =
+      conn
+      |> auth_conn(applicant.user)
+      |> graphql_query(
+        query: @join_mutation,
+        variables: %{actorId: applicant.actor.id, eventId: event.id, message: "kısa"}
+      )
+
+    assert hd(res["errors"])["message"] =~ "motivation note"
+    assert participant_count(event) == 1
+  end
+
+  test "approved members can apply, are moderated and capacity is enforced", %{
     conn: conn,
     event: event,
     organizer: organizer,
-    anonymous_actor_id: actor_id
+    applicants: applicants
   } do
-    applicants = for n <- 1..5, do: applicant(n)
+    participants =
+      Enum.map(applicants, fn applicant ->
+        res =
+          conn
+          |> auth_conn(applicant.user)
+          |> graphql_query(
+            query: @join_mutation,
+            variables: %{
+              actorId: applicant.actor.id,
+              eventId: event.id,
+              message:
+                "Hukuk bürosunun günlük işleyişini yerinde görmek istiyorum. Başvuru #{applicant.number}."
+            }
+          )
 
-    Enum.each(applicants, fn applicant ->
-      res =
-        graphql_query(conn,
-          query: @join_mutation,
-          variables: %{
-            actorId: actor_id,
-            eventId: event.id,
-            email: applicant.email,
-            message: applicant.message,
-            name: applicant.name,
-            lawStatus: "student",
-            kvkkAccepted: true
-          }
-        )
+        assert res["errors"] == nil
+        assert res["data"]["joinEvent"]["role"] == "NOT_APPROVED"
+        participant_for(event, applicant.actor.id)
+      end)
 
-      assert res["errors"] == nil
-      assert res["data"]["joinEvent"]["role"] == "NOT_CONFIRMED"
-      assert res["data"]["joinEvent"]["metadata"]["name"] == applicant.name
-      assert res["data"]["joinEvent"]["metadata"]["lawStatus"] == "student"
-    end)
-
-    participants = Enum.map(applicants, &participant_for(event, &1.email))
-    assert Enum.all?(participants, &(&1.role == :not_confirmed))
     assert length(Enum.uniq_by(participants, & &1.id)) == 5
 
-    # e-mail confirmation moves the application into the manual review queue
-    first = hd(participants)
-
-    res =
-      graphql_query(conn,
-        query: @confirm_mutation,
-        variables: %{token: first.metadata.confirmation_token}
-      )
-
-    assert res["errors"] == nil
-    assert res["data"]["confirmParticipation"]["role"] == "NOT_APPROVED"
-    assert participant_for(event, hd(applicants).email).role == :not_approved
-
-    # rejection is manual and recorded
-    last = List.last(participants)
+    # The organizer rejects one application.
+    rejected = List.last(participants)
 
     res =
       conn
       |> auth_conn(organizer)
       |> graphql_query(
         query: @update_mutation,
-        variables: %{id: last.id, role: "REJECTED"}
+        variables: %{id: rejected.id, role: "REJECTED"}
       )
 
     assert res["errors"] == nil
     assert res["data"]["updateParticipation"]["role"] == "REJECTED"
-    assert participant_for(event, List.last(applicants).email).role == :rejected
 
-    # three approvals fill the listing
+    # Three approvals fill the listing.
     [a, b, c, d, _e] = participants
 
     Enum.each([a, b, c], fn participant ->
@@ -186,7 +149,7 @@ defmodule Mobilizon.GHD.ApplicationFlowTest do
 
     assert Events.count_participant_participants(event.id) == 3
 
-    # the fourth pending application cannot be approved
+    # The fourth pending application cannot be approved.
     res =
       conn
       |> auth_conn(organizer)
@@ -197,42 +160,18 @@ defmodule Mobilizon.GHD.ApplicationFlowTest do
 
     assert res["errors"] != nil
     assert hd(res["errors"])["message"] =~ "maximum capacity"
-    assert participant_for(event, Enum.at(applicants, 3).email).role == :not_approved
+    assert Repo.get!(Participant, d.id).role == :not_approved
     assert Events.count_participant_participants(event.id) == 3
   end
 
-  test "restricted anonymous application requires the GHD fields", %{
-    conn: conn,
-    event: event,
-    anonymous_actor_id: actor_id
-  } do
-    res =
-      graphql_query(conn,
-        query: @join_mutation,
-        variables: %{
-          actorId: actor_id,
-          eventId: event.id,
-          email: "eksik@example.com",
-          message: "Kısa not"
-        }
-      )
-
-    assert hd(res["errors"])["message"] == "Please provide your full name"
-    assert Repo.aggregate(from(p in Participant, where: p.event_id == ^event.id), :count) == 1
+  defp participant_count(event) do
+    Repo.aggregate(from(p in Participant, where: p.event_id == ^event.id), :count)
   end
 
-  defp applicant(n) do
-    %{
-      name: "Aday #{n}",
-      email: "aday#{n}@example.com",
-      message: "Hukuk bürosunun günlük işleyişini yerinde görmek istiyorum. Başvuru #{n}."
-    }
-  end
-
-  defp participant_for(event, email) do
+  defp participant_for(event, actor_id) do
     Repo.one!(
       from p in Participant,
-        where: p.event_id == ^event.id and fragment("? ->>'email' = ?", p.metadata, ^email)
+        where: p.event_id == ^event.id and p.actor_id == ^actor_id
     )
   end
 end

@@ -25,7 +25,7 @@ export const actorRoutes: RouteRecordRaw[] = [
     name: ActorRouteName.GROUP,
     component: (): Promise<any> => import("@/views/Group/GroupView.vue"),
     props: true,
-    meta: { requiredAuth: false, announcer: { skip: true } },
+    meta: { requiredAuth: true, announcer: { skip: true } },
   },
   {
     path: "/groups/me",

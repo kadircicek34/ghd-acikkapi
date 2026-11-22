@@ -11,7 +11,7 @@
       <p class="mt-2 text-sm leading-relaxed text-ghd-muted">
         Global Hukukçular Derneği üyelik başvurusu. Başvurunuz önce e-posta ile
         doğrulanır, ardından dernek yönetimi tarafından değerlendirilir. Açık
-        Kapı etkinlik başvurusu için hesap açmanız gerekmez.
+        Kapı etkinlik başvurusu için onaylı üyelik hesabı zorunludur.
       </p>
       <o-notification variant="info" :closable="false">
         Üyelik başvurusunda bulunmak için geçerli bir e-posta adresi ve kısa bir
@@ -27,7 +27,7 @@
             <ul>
               <li>Üyelik başvurunuzun durumunu takip etmek</li>
               <li>Dernek duyuru ve programlarından haberdar olmak</li>
-              <li>İleride düzenlenecek etkinliklere hızlı başvurmak</li>
+              <li>Açık Kapı misafirlik ilanına başvurmak</li>
             </ul>
           </div>
         </div>
@@ -98,13 +98,16 @@
             />
           </o-field>
 
+          <o-field label="Hukuk statünüz" label-for="law-status">
+            <o-select id="law-status" v-model="lawStatus" required>
+              <option value="student">Hukuk Fakültesi Öğrencisi</option>
+              <option value="graduate">Hukuk Fakültesi Mezunu</option>
+            </o-select>
+          </o-field>
+
           <o-field
             v-if="config?.registrationsModeration"
-            :label="
-              t(
-                'Registration is subject to moderation, indicate your motivation.'
-              )
-            "
+            label="Kısa motivasyon notunuz"
             :variant="errorModerationType"
             :message="errorModerationMessage"
             label-for="moderation"
@@ -116,6 +119,7 @@
               id="moderation"
               type="textarea"
               v-model="credentials.moderation"
+              placeholder="Neden GHD Açık Kapı üyeliğine başvuruyorsunuz? Kısaca anlatın."
               expanded
             />
           </o-field>
@@ -254,13 +258,15 @@ const { result: configResult } = useQuery<{ config: IConfig }>(CONFIG);
 
 const config = computed(() => configResult.value?.config);
 
+const lawStatus = ref<"student" | "graduate">("student");
+
 const credentials = reactive<credentialsType>({
   email: typeof route.query.email === "string" ? route.query.email : "",
   password:
     typeof route.query.password === "string" ? route.query.password : "",
   moderation:
     typeof route.query.moderation === "string" ? route.query.moderation : "",
-  locale: "en",
+  locale: "tr",
 });
 
 const otherErrors = ref<errorMessage[]>([]);
@@ -336,7 +342,15 @@ const submit = async (): Promise<void> => {
     passwordErrors.value = [];
     moderationError.value = [];
 
-    mutate(credentials);
+    const lawStatusLabel =
+      lawStatus.value === "student"
+        ? "Hukuk Fakültesi Öğrencisi"
+        : "Hukuk Fakültesi Mezunu";
+
+    mutate({
+      ...credentials,
+      moderation: `Hukuk statüsü: ${lawStatusLabel}\n\n${credentials.moderation}`,
+    });
   } catch (error: any) {
     console.error(error);
 

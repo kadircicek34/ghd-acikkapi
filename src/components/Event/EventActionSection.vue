@@ -293,12 +293,13 @@
             joinEvent(actorForConfirmation as IPerson, messageForConfirmation)
           "
         >
-          <o-field :label="t('Message')">
+          <o-field label="Kısa motivasyon notu">
             <o-input
               type="textarea"
               size="medium"
               v-model="messageForConfirmation"
               minlength="10"
+              required
             ></o-input>
           </o-field>
           <div class="buttons">

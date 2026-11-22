@@ -78,6 +78,42 @@ config :mobilizon, :instance,
   email_from: System.get_env("MOBILIZON_INSTANCE_EMAIL", "noreply@mobilizon.lan"),
   email_reply_to: System.get_env("MOBILIZON_REPLY_EMAIL", "noreply@mobilizon.lan")
 
+
+# GHD Açık Kapı: yalnızca hesap açmış ve yönetici tarafından onaylanmış üyeler
+# başvurabilir. Anonim katılım tamamen kapatıldı.
+config :mobilizon, :anonymous,
+  participation: [
+    allowed: false,
+    validation: %{
+      email: [enabled: true, confirmation_required: true],
+      captcha: [enabled: false]
+    }
+  ],
+  event_creation: [
+    allowed: false,
+    validation: %{
+      email: [enabled: true, confirmation_required: true],
+      captcha: [enabled: false]
+    }
+  ],
+  reports: [allowed: false]
+
+
+# GHD Açık Kapı: tema betiği ve Google Fonts için CSP istisnaları.
+config :mobilizon, :http_security,
+  csp_policy: [
+    script_src: ["'unsafe-inline'"],
+    style_src: ["'unsafe-inline' ", "https://fonts.googleapis.com "],
+    font_src: ["https://fonts.gstatic.com"],
+    img_src: ["*.tile.openstreetmap.org", "https://*.tile.openstreetmap.org"],
+    connect_src: ["https://fonts.googleapis.com", "https://fonts.gstatic.com"],
+    manifest_src: [],
+    media_src: [],
+    object_src: [],
+    frame_src: [],
+    frame_ancestors: []
+  ]
+
 config :mobilizon, Mobilizon.Storage.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: System.get_env("MOBILIZON_DATABASE_USERNAME", "username"),
