@@ -94,15 +94,25 @@ config :mobilizon, Mobilizon.Web.Email.Mailer,
   adapter: Swoosh.Adapters.SMTP,
   relay: System.get_env("MOBILIZON_SMTP_SERVER", "localhost"),
   port: System.get_env("MOBILIZON_SMTP_PORT", "25"),
-  username: System.get_env("MOBILIZON_SMTP_USERNAME", nil),
-  password: System.get_env("MOBILIZON_SMTP_PASSWORD", nil),
-  tls: System.get_env("MOBILIZON_SMTP_TLS", "if_available"),
+  username: System.get_env("MOBILIZON_SMTP_USERNAME", ""),
+  password: System.get_env("MOBILIZON_SMTP_PASSWORD", ""),
+  tls:
+    (case System.get_env("MOBILIZON_SMTP_TLS", "if_available") do
+       "always" -> :always
+       "never" -> :never
+       _ -> :if_available
+     end),
   tls_options:
     :tls_certificate_check.options(System.get_env("MOBILIZON_SMTP_SERVER", "localhost")),
-  ssl: System.get_env("MOBILIZON_SMTP_SSL", "false"),
+  ssl: System.get_env("MOBILIZON_SMTP_SSL", "false") == "true",
   retries: 1,
   no_mx_lookups: false,
-  auth: System.get_env("MOBILIZON_SMTP_AUTH", "if_available")
+  auth:
+    (case System.get_env("MOBILIZON_SMTP_AUTH", "if_available") do
+       "always" -> :always
+       "never" -> :never
+       _ -> :if_available
+     end)
 
 config :geolix,
   databases: [

@@ -755,8 +755,8 @@ msgstr ""
 #, elixir-format, elixir-autogen
 msgid "Would you wish to cancel your attendance, visit the event page through the link above and click the « Attending » button."
 msgid_plural "Would you wish to cancel your attendance to one or several events, visit the event pages through the links above and click the « Attending » button."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Başvurunuzu iptal etmek için yukarıdaki bağlantıdan ilan sayfasına gidip « Başvurum kabul edildi » düğmesine tıklayın."
+msgstr[1] "Başvurularınızı iptal etmek için yukarıdaki bağlantılardan ilan sayfalarına gidip « Başvurum kabul edildi » düğmesine tıklayın."
 
 #: lib/web/templates/email/email.text.eex:11
 #, elixir-autogen, elixir-format
@@ -1992,7 +1992,7 @@ msgstr "Başvuruyu iptal et"
 #: lib/web/templates/email/event_participation_confirmed.html.heex:99
 #, elixir-autogen, elixir-format
 msgid "If you wish to cancel your participation, simply click on the link below."
-msgstr ""
+msgstr "Başvurunuzu iptal etmek isterseniz aşağıdaki bağlantıya tıklayın."
 
 #: lib/web/email/admin.ex:158
 #, elixir-autogen, elixir-format

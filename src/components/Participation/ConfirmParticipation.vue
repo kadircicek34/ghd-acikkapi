@@ -73,6 +73,7 @@ const props = defineProps<{
 
 const loading = ref(true);
 const failed = ref(false);
+const submitted = ref(false);
 const participation = ref<IParticipant | null | undefined>(null);
 
 const { onDone, onError, mutate } = useMutation<{
@@ -82,7 +83,8 @@ const { onDone, onError, mutate } = useMutation<{
 const participationToken = computed(() => props.token);
 
 watchEffect(() => {
-  if (participationToken.value) {
+  if (participationToken.value && !submitted.value) {
+    submitted.value = true;
     mutate({
       token: participationToken.value,
     });

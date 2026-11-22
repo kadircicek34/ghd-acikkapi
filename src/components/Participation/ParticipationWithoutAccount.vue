@@ -288,6 +288,7 @@ joinEventError((e) => {
 });
 
 const joinEvent = async (): Promise<void> => {
+  if (sendingForm.value) return;
   error.value = false;
   sendingForm.value = true;
   joinEventMutation({
