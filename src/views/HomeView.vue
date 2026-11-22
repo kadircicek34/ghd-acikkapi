@@ -383,11 +383,11 @@ const formattedDate = computed(() => {
 const eventLocation = computed(() => {
   const address = event.value?.physicalAddress;
   if (!address) return "Yer ilanla birlikte duyurulur";
-  return (
-    [address.description, address.locality, address.region]
-      .filter(Boolean)
-      .join(", ") || "Yer ilanla birlikte duyurulur"
-  );
+  const parts = [address.description, address.locality, address.region]
+    .filter(Boolean)
+    .map((part) => part?.trim())
+    .filter(Boolean) as string[];
+  return [...new Set(parts)].join(", ") || "Yer ilanla birlikte duyurulur";
 });
 
 const steps = [
