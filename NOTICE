@@ -24,7 +24,7 @@ GHD Açık Kapı'ya özgü başlıca değişiklikler:
   eklenmesi; başvuruların yönetici onayına tabi tutulması
 - İlan başvurusunda kısa motivasyon notunun sunucu tarafında zorunlu tutulması
 - Manuel kabul sırasında ilan kontenjanının sunucu tarafında korunması
-- Yerel kurulum için tohum görevi (`Mobilizon.GHD.Seeder`) ve Docker imajı
+- Tohum görevi (`Mobilizon.GHD.Seeder`) ve Docker imajı
 
 Bu uyarlama, Global Hukukçular Derneği'nin canlı Açık Kapı hizmeti için
 hazırlanmıştır.
