@@ -9,7 +9,12 @@ export interface IParticipant {
   role: ParticipantRole;
   actor: IActor;
   event: IEvent;
-  metadata: { cancellationToken?: string; message?: string };
+  metadata: {
+    cancellationToken?: string;
+    message?: string;
+    name?: string;
+    lawStatus?: "student" | "graduate" | string;
+  };
   insertedAt?: Date;
 }
 

@@ -8,53 +8,26 @@
           })
         }}
       </h1>
-      <i18n-t
-        tag="p"
-        keypath="{instanceName} is an instance of the {mobilizon} software."
-      >
-        <template #instanceName>
-          <b>{{ config?.name }}</b>
-        </template>
-        <template #mobilizon>
-          <a href="https://mobilizon.org" target="_blank" class="out">{{
-            t("Mobilizon")
-          }}</a>
-        </template>
-      </i18n-t>
+      <p class="mt-2 text-sm leading-relaxed text-ghd-muted">
+        Global Hukukçular Derneği üyelik başvurusu. Başvurunuz önce e-posta ile
+        doğrulanır, ardından dernek yönetimi tarafından değerlendirilir. Açık
+        Kapı etkinlik başvurusu için hesap açmanız gerekmez.
+      </p>
+      <o-notification variant="info" :closable="false">
+        Üyelik başvurusunda bulunmak için geçerli bir e-posta adresi ve kısa bir
+        motivasyon notu yeterlidir. Onay e-postası gelmeden hesabınız aktif
+        olmaz.
+      </o-notification>
     </section>
     <section class="flex flex-wrap gap-6">
       <div class="">
         <div class="my-4">
-          <h2 class="text-xl">{{ t("Why create an account?") }}</h2>
+          <h2 class="text-xl">GHD Açık Kapı hesabı ne işe yarar?</h2>
           <div class="prose dark:prose-invert">
             <ul>
-              <li>{{ t("To create and manage your events") }}</li>
-              <li>
-                {{
-                  t(
-                    "To create and manage multiples identities from a same account"
-                  )
-                }}
-              </li>
-              <li>
-                {{
-                  t(
-                    "To register for an event by choosing one of your identities"
-                  )
-                }}
-              </li>
-              <li v-if="config?.features.groups">
-                {{
-                  t(
-                    "To create or join an group and start organizing with other people"
-                  )
-                }}
-              </li>
-              <li v-if="config?.features.groups">
-                {{
-                  t("To follow groups and be informed of their latest events")
-                }}
-              </li>
+              <li>Üyelik başvurunuzun durumunu takip etmek</li>
+              <li>Dernek duyuru ve programlarından haberdar olmak</li>
+              <li>İleride düzenlenecek etkinliklere hızlı başvurmak</li>
             </ul>
           </div>
         </div>

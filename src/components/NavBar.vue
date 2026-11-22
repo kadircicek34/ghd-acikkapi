@@ -1,239 +1,259 @@
 <template>
-  <nav
-    class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-zinc-900"
-    id="navbar"
-  >
-    <div
-      class="container md:grid md:grid-flow-col md:items-start md:grid-cols-[auto,1fr,auto,auto] mx-auto flex flex-wrap items-center gap-2 sm:gap-4"
-    >
-      <router-link
-        :to="{ name: RouteName.HOME }"
-        :aria-label="t('Back to homepage')"
-        class="flex items-center"
-        :class="{ 'flex-1': !currentActor?.id }"
-      >
-        <MobilizonLogo class="w-40" />
-      </router-link>
-      <div
-        class="w-full md:block md:self-center order-4 md:order-none"
-        id="mobile-menu-2"
-        :class="{ hidden: !showMobileMenu }"
-      >
-        <ul
-          class="flex flex-col md:gap-8 md:justify-start items-center md:flex-wrap md:flex-row mt-2 md:mt-0 md:font-lightbold"
+  <header class="ghd-header">
+    <div class="ghd-topline">
+      <div class="container mx-auto flex flex-wrap items-center justify-between gap-2 px-3 py-1.5">
+        <span>GLOBAL HUKUKÇULAR DERNEĞİ · AÇIK KAPI</span>
+        <a :href="GHD_MAIN_SITE_URL" rel="noopener" target="_blank"
+          >globalhukukcular.com</a
         >
-          <li>
-            <router-link
-              :to="{ name: RouteName.SEARCH }"
-              class="block relative py-2 pr-4 pl-3 text-zinc-700 border-b border-gray-100 hover:bg-zinc-50 md:hover:bg-transparent md:border-0 md:hover:text-mbz-purple-700 md:p-0 dark:text-zinc-400 md:dark:hover:text-white dark:hover:bg-zinc-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-              >{{ t("Search") }}</router-link
-            >
-          </li>
+      </div>
+    </div>
+    <nav class="ghd-navbar" id="navbar">
+      <div
+        class="container mx-auto flex flex-wrap items-center justify-between gap-3 px-3 py-3"
+      >
+        <router-link
+          :to="{ name: RouteName.HOME }"
+          :aria-label="t('Back to homepage')"
+          class="flex shrink-0 items-center"
+        >
+          <MobilizonLogo />
+        </router-link>
 
+        <div class="hidden items-center gap-7 md:flex">
+          <router-link class="ghd-nav-link" :to="{ name: RouteName.HOME }"
+            >Açık Kapı</router-link
+          >
+          <router-link
+            class="ghd-nav-link"
+            :to="{ name: RouteName.HOME, hash: '#ilan' }"
+            >İlan</router-link
+          >
+          <router-link
+            class="ghd-nav-link"
+            :to="{ name: RouteName.HOME, hash: '#surec' }"
+            >Nasıl işliyor?</router-link
+          >
+          <router-link class="ghd-nav-link" :to="{ name: RouteName.ABOUT }"
+            >Hakkında</router-link
+          >
+          <router-link
+            v-if="canRegister"
+            class="ghd-nav-link"
+            :to="{ name: RouteName.REGISTER }"
+            >Üyelik</router-link
+          >
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+          <router-link
+            v-if="!currentUser?.isLoggedIn"
+            class="hidden text-sm font-semibold text-ghd-navy sm:inline-flex"
+            :to="{ name: RouteName.LOGIN }"
+            >{{ t("Login") }}</router-link
+          >
+          <router-link
+            class="ghd-btn ghd-btn-gold !px-4 !py-2 text-sm"
+            :to="GHD_EVENT_PATH"
+            >Başvur</router-link
+          >
+          <div class="flex gap-2" v-if="currentUser?.isLoggedIn">
+            <router-link
+              :to="{ name: RouteName.CONVERSATION_LIST }"
+              class="relative flex text-sm"
+              id="conversations-menu-button"
+              aria-expanded="false"
+            >
+              <span class="sr-only">{{ t("Open conversations") }}</span>
+              <Inbox :size="28" />
+              <span
+                v-show="unreadConversationsCount > 0"
+                class="absolute bottom-0.5 -left-2 bg-primary rounded-full inline-block h-3 w-3 mx-2"
+              >
+              </span>
+            </router-link>
+            <o-dropdown position="bottom-right">
+              <template #trigger>
+                <button
+                  type="button"
+                  class="flex rounded-full text-sm focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                  id="user-menu-button"
+                  aria-expanded="false"
+                >
+                  <span class="sr-only">{{ t("Open user menu") }}</span>
+                  <figure class="h-8 w-8" v-if="currentActor?.avatar">
+                    <img
+                      class="rounded-full w-full h-full object-cover"
+                      alt=""
+                      :src="currentActor?.avatar.url"
+                      width="32"
+                      height="32"
+                      loading="lazy"
+                    />
+                  </figure>
+                  <AccountCircle v-else :size="32" />
+                </button>
+              </template>
+
+              <div
+                class="z-50 text-base list-none bg-white rounded divide-y divide-gray-100 dark:bg-zinc-700 dark:divide-gray-600 max-w-xs"
+                position="bottom-left"
+              >
+                <o-dropdown-item aria-role="listitem">
+                  <div class="px-4">
+                    <span class="block text-sm text-zinc-900 dark:text-white">{{
+                      displayName(currentActor) || currentUser.email
+                    }}</span>
+                    <span
+                      class="block text-sm font-medium text-zinc-500 truncate dark:text-zinc-400"
+                      v-if="currentUser?.role === ICurrentUserRole.ADMINISTRATOR"
+                      >{{ t("Administrator") }}</span
+                    >
+                    <span
+                      class="block text-sm font-medium text-zinc-500 truncate dark:text-zinc-400"
+                      v-if="currentUser?.role === ICurrentUserRole.MODERATOR"
+                      >{{ t("Moderator") }}</span
+                    >
+                  </div>
+                </o-dropdown-item>
+                <o-dropdown-item
+                  v-for="identity in identities"
+                  :active="identity.id === currentActor?.id"
+                  :key="identity.id"
+                  tabindex="0"
+                  @click="changeIdentity(identity)"
+                  @keyup.enter="changeIdentity(identity)"
+                >
+                  <div class="flex gap-1 items-center w-full">
+                    <div class="flex-none">
+                      <figure class="h-8 w-8" v-if="identity.avatar">
+                        <img
+                          class="rounded-full object-cover h-full"
+                          loading="lazy"
+                          :src="identity.avatar.url"
+                          alt=""
+                          height="32"
+                          width="32"
+                        />
+                      </figure>
+                      <AccountCircle v-else :size="32" />
+                    </div>
+
+                    <div
+                      class="text-base text-zinc-700 dark:text-zinc-100 flex flex-col flex-auto overflow-hidden items-start w-full"
+                    >
+                      <p class="truncate w-full">{{ displayName(identity) }}</p>
+                      <p
+                        class="truncate text-sm w-full"
+                        v-if="identity.preferredUsername"
+                      >
+                        @{{ identity.preferredUsername }}
+                      </p>
+                    </div>
+                  </div>
+                </o-dropdown-item>
+                <o-dropdown-item
+                  aria-role="listitem"
+                  tag="router-link"
+                  :to="{ name: RouteName.SETTINGS }"
+                >
+                  <span
+                    class="block py-2 px-4 text-sm text-zinc-700 dark:text-zinc-200 dark:hover:text-white"
+                    >{{ t("My account") }}</span
+                  >
+                </o-dropdown-item>
+                <o-dropdown-item
+                  aria-role="listitem"
+                  v-if="currentUser?.role === ICurrentUserRole.ADMINISTRATOR"
+                  tag="router-link"
+                  :to="{ name: RouteName.ADMIN_DASHBOARD }"
+                >
+                  <span
+                    class="block py-2 px-4 text-sm text-zinc-700 dark:text-zinc-200 dark:hover:text-white"
+                    >{{ t("Administration") }}</span
+                  >
+                </o-dropdown-item>
+                <o-dropdown-item
+                  aria-role="listitem"
+                  @click="performLogout"
+                  @keyup.enter="performLogout"
+                >
+                  <span
+                    class="block py-2 px-4 text-sm text-zinc-700 dark:text-zinc-200 dark:hover:text-white"
+                    >{{ t("Log out") }}</span
+                  >
+                </o-dropdown-item>
+              </div>
+            </o-dropdown>
+          </div>
+          <button
+            @click="showMobileMenu = !showMobileMenu"
+            type="button"
+            class="inline-flex items-center justify-end rounded p-2 text-ghd-navy md:hidden"
+            aria-controls="mobile-menu-ghd"
+            :aria-expanded="showMobileMenu"
+            :aria-label="t('Open main menu')"
+          >
+            <svg
+              class="h-6 w-6"
+              aria-hidden="true"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div
+        id="mobile-menu-ghd"
+        class="border-t border-ghd-line bg-ghd-cream/95 px-3 pb-4 md:hidden"
+        v-show="showMobileMenu"
+      >
+        <ul class="flex flex-col gap-1 pt-2">
+          <li>
+            <router-link class="ghd-mobile-link" :to="{ name: RouteName.HOME }"
+              >Açık Kapı</router-link
+            >
+          </li>
           <li>
             <router-link
-              :to="{ name: RouteName.EVENT_CALENDAR }"
-              class="block relative py-2 pr-4 pl-3 text-zinc-700 border-b border-gray-100 hover:bg-zinc-50 md:hover:bg-transparent md:border-0 md:hover:text-mbz-purple-700 md:p-0 dark:text-zinc-400 md:dark:hover:text-white dark:hover:bg-zinc-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-              >{{ t("Calendar")
-              }}<span class="absolute right-0 text-xs"
-                ><br />(beta)</span
-              ></router-link
+              class="ghd-mobile-link"
+              :to="{ name: RouteName.HOME, hash: '#ilan' }"
+              >İlan</router-link
             >
           </li>
-          <li v-if="currentActor?.id">
+          <li>
             <router-link
-              :to="{ name: RouteName.MY_EVENTS }"
-              class="block py-2 pr-4 pl-3 text-zinc-700 border-b border-gray-100 hover:bg-zinc-50 md:hover:bg-transparent md:border-0 md:hover:text-mbz-purple-700 md:p-0 dark:text-zinc-400 md:dark:hover:text-white dark:hover:bg-zinc-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-              >{{ t("My events") }}</router-link
+              class="ghd-mobile-link"
+              :to="{ name: RouteName.HOME, hash: '#surec' }"
+              >Nasıl işliyor?</router-link
             >
           </li>
-          <li v-if="currentActor?.id">
-            <router-link
-              :to="{ name: RouteName.MY_GROUPS }"
-              class="block py-2 pr-4 pl-3 text-zinc-700 border-b border-gray-100 hover:bg-zinc-50 md:hover:bg-transparent md:border-0 md:hover:text-mbz-purple-700 md:p-0 dark:text-zinc-400 md:dark:hover:text-white dark:hover:bg-zinc-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-              >{{ t("My groups") }}</router-link
+          <li>
+            <router-link class="ghd-mobile-link" :to="{ name: RouteName.ABOUT }"
+              >Hakkında</router-link
+            >
+          </li>
+          <li v-if="canRegister">
+            <router-link class="ghd-mobile-link" :to="{ name: RouteName.REGISTER }"
+              >Üyelik</router-link
             >
           </li>
           <li v-if="!currentUser?.isLoggedIn">
-            <router-link
-              :to="{ name: RouteName.LOGIN }"
-              class="block py-2 pr-4 pl-3 text-zinc-700 border-b border-gray-100 hover:bg-zinc-50 md:hover:bg-transparent md:border-0 md:hover:text-mbz-purple-700 md:p-0 dark:text-zinc-400 md:dark:hover:text-white dark:hover:bg-zinc-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+            <router-link class="ghd-mobile-link" :to="{ name: RouteName.LOGIN }"
               >{{ t("Login") }}</router-link
-            >
-          </li>
-          <li v-if="!currentUser?.isLoggedIn && canRegister">
-            <router-link
-              :to="{ name: RouteName.REGISTER }"
-              class="block py-2 pr-4 pl-3 text-zinc-700 border-b border-gray-100 hover:bg-zinc-50 md:hover:bg-transparent md:border-0 md:hover:text-mbz-purple-700 md:p-0 dark:text-zinc-400 md:dark:hover:text-white dark:hover:bg-zinc-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-              >{{ t("Register") }}</router-link
-            >
-          </li>
-          <li v-for="(link, index) in enabledExternalLinks" :key="index">
-            <a
-              :href="link.url"
-              rel="noopener noreferrer ugc"
-              target="_blank"
-              class="block py-2 pr-4 pl-3 text-zinc-700 border-b border-gray-100 hover:bg-zinc-50 md:hover:bg-transparent md:border-0 md:hover:text-mbz-purple-700 md:p-0 dark:text-zinc-400 md:dark:hover:text-white dark:hover:bg-zinc-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-              >{{ link.label }}</a
             >
           </li>
         </ul>
       </div>
-      <div class="m-auto md:display:none;"></div>
-      <div class="flex gap-2" v-if="currentUser?.isLoggedIn">
-        <router-link
-          :to="{ name: RouteName.CONVERSATION_LIST }"
-          class="flex sm:mr-3 text-sm md:mr-0 relative"
-          id="conversations-menu-button"
-          aria-expanded="false"
-        >
-          <span class="sr-only">{{ t("Open conversations") }}</span>
-          <Inbox :size="32" />
-          <span
-            v-show="unreadConversationsCount > 0"
-            class="absolute bottom-0.5 -left-2 bg-primary rounded-full inline-block h-3 w-3 mx-2"
-          >
-          </span>
-        </router-link>
-        <o-dropdown position="bottom-right">
-          <template #trigger>
-            <button
-              type="button"
-              class="flex sm:mr-3 text-sm rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-              id="user-menu-button"
-              aria-expanded="false"
-            >
-              <span class="sr-only">{{ t("Open user menu") }}</span>
-              <figure class="h-8 w-8" v-if="currentActor?.avatar">
-                <img
-                  class="rounded-full w-full h-full object-cover"
-                  alt=""
-                  :src="currentActor?.avatar.url"
-                  width="32"
-                  height="32"
-                  loading="lazy"
-                />
-              </figure>
-              <AccountCircle v-else :size="32" />
-            </button>
-          </template>
-
-          <!-- Dropdown menu -->
-          <div
-            class="z-50 text-base list-none bg-white rounded divide-y divide-gray-100 dark:bg-zinc-700 dark:divide-gray-600 max-w-xs"
-            position="bottom-left"
-          >
-            <o-dropdown-item aria-role="listitem">
-              <div class="px-4">
-                <span class="block text-sm text-zinc-900 dark:text-white">{{
-                  displayName(currentActor) || currentUser.email
-                }}</span>
-                <span
-                  class="block text-sm font-medium text-zinc-500 truncate dark:text-zinc-400"
-                  v-if="currentUser?.role === ICurrentUserRole.ADMINISTRATOR"
-                  >{{ t("Administrator") }}</span
-                >
-                <span
-                  class="block text-sm font-medium text-zinc-500 truncate dark:text-zinc-400"
-                  v-if="currentUser?.role === ICurrentUserRole.MODERATOR"
-                  >{{ t("Moderator") }}</span
-                >
-              </div>
-            </o-dropdown-item>
-            <o-dropdown-item
-              v-for="identity in identities"
-              :active="identity.id === currentActor?.id"
-              :key="identity.id"
-              tabindex="0"
-              @click="changeIdentity(identity)"
-              @keyup.enter="changeIdentity(identity)"
-            >
-              <div class="flex gap-1 items-center w-full">
-                <div class="flex-none">
-                  <figure class="h-8 w-8" v-if="identity.avatar">
-                    <img
-                      class="rounded-full object-cover h-full"
-                      loading="lazy"
-                      :src="identity.avatar.url"
-                      alt=""
-                      height="32"
-                      width="32"
-                    />
-                  </figure>
-                  <AccountCircle v-else :size="32" />
-                </div>
-
-                <div
-                  class="text-base text-zinc-700 dark:text-zinc-100 flex flex-col flex-auto overflow-hidden items-start w-full"
-                >
-                  <p class="truncate w-full">{{ displayName(identity) }}</p>
-                  <p
-                    class="truncate text-sm w-full"
-                    v-if="identity.preferredUsername"
-                  >
-                    @{{ identity.preferredUsername }}
-                  </p>
-                </div>
-              </div>
-            </o-dropdown-item>
-            <o-dropdown-item
-              aria-role="listitem"
-              tag="router-link"
-              :to="{ name: RouteName.SETTINGS }"
-            >
-              <span
-                class="block py-2 px-4 text-sm text-zinc-700 dark:text-zinc-200 dark:hover:text-white"
-                >{{ t("My account") }}</span
-              >
-            </o-dropdown-item>
-            <o-dropdown-item
-              aria-role="listitem"
-              v-if="currentUser?.role === ICurrentUserRole.ADMINISTRATOR"
-              tag="router-link"
-              :to="{ name: RouteName.ADMIN_DASHBOARD }"
-            >
-              <span
-                class="block py-2 px-4 text-sm text-zinc-700 dark:text-zinc-200 dark:hover:text-white"
-                >{{ t("Administration") }}</span
-              >
-            </o-dropdown-item>
-            <o-dropdown-item
-              aria-role="listitem"
-              @click="performLogout"
-              @keyup.enter="performLogout"
-            >
-              <span
-                class="block py-2 px-4 text-sm text-zinc-700 dark:text-zinc-200 dark:hover:text-white"
-                >{{ t("Log out") }}</span
-              >
-            </o-dropdown-item>
-          </div>
-        </o-dropdown>
-      </div>
-      <button
-        @click="showMobileMenu = !showMobileMenu"
-        type="button"
-        class="inline-flex items-center justify-end p-2 ml-1 text-sm text-zinc-500 rounded-lg md:hidden hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:focus:ring-gray-600"
-        aria-controls="mobile-menu-2"
-        aria-expanded="false"
-      >
-        <span class="sr-only">{{ t("Open main menu") }}</span>
-        <svg
-          class="w-6 h-6"
-          aria-hidden="true"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
-      </button>
-    </div>
-  </nav>
+    </nav>
+  </header>
   <div v-if="currentUser?.id && !currentActor?.id" class="p-5">
     <o-notification variant="warning">
       <div class="flex place-content-between items-center">
@@ -255,6 +275,7 @@
 
 <script lang="ts" setup>
 import MobilizonLogo from "@/components/MobilizonLogo.vue";
+import { GHD_EVENT_PATH, GHD_MAIN_SITE_URL } from "@/ghd/constants";
 import { ICurrentUserRole } from "@/types/enums";
 import { logout } from "../utils/auth";
 import { displayName, IPerson } from "../types/actor";

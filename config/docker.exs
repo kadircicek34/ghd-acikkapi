@@ -35,7 +35,11 @@ listen_ip =
 
 config :mobilizon, Mobilizon.Web.Endpoint,
   server: true,
-  url: [host: System.get_env("MOBILIZON_INSTANCE_HOST", "mobilizon.lan")],
+  url: [
+    host: System.get_env("MOBILIZON_INSTANCE_HOST", "mobilizon.lan"),
+    scheme: System.get_env("MOBILIZON_INSTANCE_SCHEME", "https"),
+    port: String.to_integer(System.get_env("MOBILIZON_INSTANCE_HOST_PORT", "443"))
+  ],
   http: [
     port: String.to_integer(System.get_env("MOBILIZON_INSTANCE_PORT", "4000")),
     ip: listen_ip
@@ -64,7 +68,7 @@ config :mobilizon, :instance,
     |> String.split(",", trim: true),
   disable_database_login:
     System.get_env("MOBILIZON_INSTANCE_DISABLE_DATABASE_LOGIN", "false") == "true",
-  default_language: System.get_env("MOBILIZON_INSTANCE_DEFAULT_LANGUAGE", "en"),
+  default_language: System.get_env("MOBILIZON_INSTANCE_DEFAULT_LANGUAGE", "tr"),
   demo: System.get_env("MOBILIZON_INSTANCE_DEMO", "false") == "true",
   allow_relay: System.get_env("MOBILIZON_INSTANCE_ALLOW_RELAY", "true") == "true",
   federating: System.get_env("MOBILIZON_INSTANCE_FEDERATING", "true") == "true",

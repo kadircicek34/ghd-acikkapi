@@ -94,6 +94,8 @@ export const FETCH_EVENT_BASIC = gql`
     event(uuid: $uuid) {
       id
       uuid
+      title
+      beginsOn
       joinOptions
       externalParticipationUrl
       participantStats {
@@ -280,6 +282,9 @@ export const JOIN_EVENT = gql`
     $actorId: ID!
     $email: String
     $message: String
+    $name: String
+    $lawStatus: String
+    $kvkkAccepted: Boolean
     $locale: String
     $timezone: Timezone
   ) {
@@ -288,6 +293,9 @@ export const JOIN_EVENT = gql`
       actorId: $actorId
       email: $email
       message: $message
+      name: $name
+      lawStatus: $lawStatus
+      kvkkAccepted: $kvkkAccepted
       locale: $locale
       timezone: $timezone
     ) {

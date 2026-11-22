@@ -11,11 +11,9 @@
     <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="theme-color" content={theme_color()} />
     <script>
-      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      	document.documentElement.classList.add('dark')
-      } else {
-      	document.documentElement.classList.remove('dark')
-      }
+      // GHD Açık Kapı uses the warm institutional light palette.
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
     </script>
     <%= if root?(assigns) do %>
       <link rel="preload" href="/img/shape-1.svg" as="image" />
@@ -32,7 +30,7 @@
     {raw(Mobilizon.Config.get([:html_hooks, :app_index_html_body_first], ""))}
     <noscript>
       <strong>
-        We're sorry but Mobilizon doesn't work properly without JavaScript enabled. Please enable it to continue.
+        GHD Açık Kapı'nın çalışması için JavaScript'i etkinleştirmeniz gerekiyor.
       </strong>
     </noscript>
     <div id="app"></div>

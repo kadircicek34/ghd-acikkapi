@@ -185,7 +185,7 @@ msgstr "Bu e-postaya sahip kullanıcı bulunamadı"
 #: lib/graphql/resolvers/person.ex:426
 #, elixir-autogen, elixir-format
 msgid "Profile is not owned by authenticated user"
-msgstr "Profil, kimliği doğrulanmış kullanıcıya ait değil"
+msgstr "Bu profil oturum açan kullanıcıya ait değil"
 
 #: lib/graphql/resolvers/user.ex:192
 #, elixir-autogen, elixir-format
@@ -359,13 +359,13 @@ msgstr ""
 #: lib/graphql/resolvers/participant.ex:98
 #, elixir-autogen, elixir-format
 msgid "A valid email is required by your instance"
-msgstr ""
+msgstr "Geçerli bir e-posta adresi gerekli"
 
 #: lib/graphql/resolvers/participant.ex:92
 #: lib/graphql/resolvers/participant.ex:145
 #, elixir-autogen, elixir-format
 msgid "Anonymous participation is not enabled"
-msgstr ""
+msgstr "Hesap açmadan başvuru bu ilan için etkin değil"
 
 #: lib/graphql/resolvers/person.ex:234
 #, elixir-autogen, elixir-format
@@ -402,7 +402,7 @@ msgstr ""
 #: lib/graphql/resolvers/participant.ex:133
 #, elixir-autogen, elixir-format
 msgid "Event id not found"
-msgstr ""
+msgstr "İlan bulunamadı"
 
 #: lib/graphql/error.ex:115
 #: lib/graphql/resolvers/event.ex:400
@@ -422,7 +422,7 @@ msgstr ""
 #: lib/graphql/resolvers/participant.ex:105
 #, elixir-autogen, elixir-format
 msgid "Internal Error"
-msgstr ""
+msgstr "Bir hata oluştu"
 
 #: lib/graphql/resolvers/discussion.ex:222
 #, elixir-autogen, elixir-format
@@ -453,7 +453,7 @@ msgstr ""
 #: lib/graphql/resolvers/participant.ex:270
 #, elixir-autogen, elixir-format
 msgid "Participant not found"
-msgstr ""
+msgstr "Başvuru bulunamadı"
 
 #: lib/graphql/resolvers/person.ex:33
 #, elixir-autogen, elixir-format
@@ -525,12 +525,12 @@ msgstr ""
 #: lib/graphql/resolvers/participant.ex:126
 #, elixir-autogen, elixir-format
 msgid "The event has already reached its maximum capacity"
-msgstr ""
+msgstr "Bu ilanın kontenjanı doldu"
 
 #: lib/graphql/resolvers/participant.ex:296
 #, elixir-autogen, elixir-format
 msgid "This token is invalid"
-msgstr ""
+msgstr "Bu doğrulama bağlantısı geçersiz"
 
 #: lib/graphql/resolvers/todos.ex:176
 #: lib/graphql/resolvers/todos.ex:243
@@ -564,7 +564,7 @@ msgstr ""
 #: lib/graphql/resolvers/participant.ex:136
 #, elixir-autogen, elixir-format
 msgid "You are already a participant of this event"
-msgstr ""
+msgstr "Bu ilana zaten başvurdunuz"
 
 #: lib/graphql/resolvers/member.ex:87
 #, elixir-autogen, elixir-format
@@ -718,12 +718,12 @@ msgstr ""
 #: lib/graphql/resolvers/participant.ex:110
 #, elixir-autogen, elixir-format
 msgid "You need to be logged-in to join an event"
-msgstr ""
+msgstr "Başvuru yapmak için giriş yapmalısınız"
 
 #: lib/graphql/resolvers/participant.ex:232
 #, elixir-autogen, elixir-format
 msgid "You need to be logged-in to leave an event"
-msgstr ""
+msgstr "Başvuruyu iptal etmek için giriş yapmalısınız"
 
 #: lib/graphql/resolvers/event.ex:414
 #, elixir-autogen, elixir-format
@@ -936,7 +936,7 @@ msgstr ""
 #: lib/graphql/resolvers/participant.ex:194
 #, elixir-autogen, elixir-format
 msgid "Failed to leave the event"
-msgstr ""
+msgstr "Başvuru iptal edilemedi"
 
 #: lib/graphql/resolvers/group.ex:236
 #, elixir-autogen, elixir-format
@@ -1338,12 +1338,12 @@ msgstr ""
 #: lib/graphql/resolvers/participant.ex:293
 #, elixir-autogen, elixir-format
 msgid "Participation is already confirmed"
-msgstr ""
+msgstr "Başvurunuz zaten doğrulanmış"
 
 #: lib/graphql/resolvers/participant.ex:290
 #, elixir-autogen, elixir-format
 msgid "Participation is confirmed but not approved yet by an organizer"
-msgstr ""
+msgstr "Başvurunuz doğrulandı; dernek değerlendirmesi bekleniyor"
 
 #: lib/graphql/resolvers/event.ex:305
 #: lib/graphql/resolvers/event.ex:394

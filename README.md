@@ -1,3 +1,21 @@
+<div align="center">
+
+# GHD Açık Kapı
+
+Global Hukukçular Derneği için **yarım günlük hukuk misafirliği** başvuru platformu.
+
+Hukuk öğrencileri ve yeni mezunlar, hesap açmadan kısa bir motivasyon notuyla
+başvurabilir. Başvurular e-posta ile doğrulanır ve dernek tarafından manuel
+olarak kabul veya ret edilir.
+
+[Uyarlanmış kaynak kod](https://github.com/kadircicek34/ghd-acikkapi) ·
+[Özgün Mobilizon 5.2.4](https://framagit.org/kaihuri/mobilizon/-/tree/5.2.4) ·
+[AGPL-3.0](LICENSE) · [Uyarlama notları](NOTICE)
+
+</div>
+
+---
+
 <h1 align="center">
   <a href="https://mobilizon.org">
     <img src="https://lutim.cpy.re/qVYC86G9.png" alt="Mobilizon">

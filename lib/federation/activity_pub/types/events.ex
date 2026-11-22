@@ -158,7 +158,8 @@ defmodule Mobilizon.Federation.ActivityPub.Types.Events do
              metadata:
                additional
                |> Map.get(:metadata, %{})
-               |> Map.update(:message, nil, &String.trim(HTML.strip_tags(&1)))
+               |> Map.update(:message, nil, &sanitize_optional/1)
+               |> Map.update(:name, nil, &sanitize_optional/1)
            }) do
         {:ok, %Participant{} = participant} ->
           join_data = Convertible.model_to_as(participant)
@@ -178,6 +179,9 @@ defmodule Mobilizon.Federation.ActivityPub.Types.Events do
       {:error, :maximum_attendee_capacity_reached}
     end
   end
+
+  defp sanitize_optional(nil), do: nil
+  defp sanitize_optional(value), do: value |> HTML.strip_tags() |> String.trim()
 
   @spec check_attendee_capacity?(Event.t()) :: boolean
   defp check_attendee_capacity?(%Event{options: options} = event) do

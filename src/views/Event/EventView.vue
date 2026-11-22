@@ -30,6 +30,14 @@
         </div>
 
         <section class="intro px-2 pt-4" dir="auto">
+          <div
+            v-if="event && event.joinOptions === EventJoinOptions.RESTRICTED"
+            class="mb-4 rounded-sm border border-ghd-gold/30 bg-ghd-gold/10 px-4 py-3 text-sm leading-relaxed text-ghd-navy"
+          >
+            <strong>GHD Açık Kapı başvurusu.</strong>
+            Kontenjan sınırlıdır; başvurular e-posta doğrulaması ve dernek
+            tarafından manuel değerlendirme ile alınır. Hesap açmanız gerekmez.
+          </div>
           <div class="flex flex-wrap gap-2 justify-end">
             <div class="flex-1 min-w-[300px]">
               <div
@@ -285,6 +293,7 @@
 
 <script lang="ts" setup>
 import {
+  EventJoinOptions,
   EventStatus,
   ParticipantRole,
   RoutingType,

@@ -1,0 +1,30 @@
+# NOTICE
+
+GHD Açık Kapı — Global Hukukçular Derneği yarım günlük misafirlik başvuru
+platformu.
+
+Bu yazılım, **Mobilizon 5.2.4** (`https://framagit.org/kaihuri/mobilizon`,
+`5.2.4` etiketi) kaynak kodundan uyarlanmıştır. Özgün proje ve tüm katkıda
+bulunanların telif hakları `LICENSE` dosyasındaki **GNU Affero General Public
+License v3.0** koşulları altında korunmaktadır.
+
+Uyarlanmış kaynak kod:
+
+- https://github.com/kadircicek34/ghd-acikkapi
+
+GHD Açık Kapı'ya özgü başlıca değişiklikler:
+
+- Türkçe arayüz ve varsayılan dil
+- Global Hukukçular Derneği marka kimliği, logo, favicon ve e-posta başlığı
+- “Katıl” yerine “Başvur” terminolojisi
+- Hesap açmadan başvuru formuna ad soyad, hukuk statüsü, kısa motivasyon notu
+  ve KVKK onayı alanlarının eklenmesi
+- Yönetici başvuru tablosuna ad soyad ve hukuk statüsü sütunlarının eklenmesi
+- Manuel kabul sırasında ilan kontenjanının sunucu tarafında korunması
+- Yerel kurulum için tohum görevi (`Mobilizon.GHD.Seeder`)
+- Yerel Docker imajı ve dağıtım dosyaları
+
+Bu uyarlama, canlı bir ortama alınmamıştır. Yerel doğrulama amacıyla
+hazırlanmıştır.
+
+Marka logosu Global Hukukçular Derneği'ne aittir; ilgili haklar saklıdır.

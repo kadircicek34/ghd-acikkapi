@@ -16,30 +16,10 @@ config :logger, level: :info
 # Load all locales in production
 config :mobilizon, :cldr,
   locales: [
-    "ar",
-    "be",
-    "bn",
-    "ca",
-    "cs",
-    "cy",
-    "de",
     "en",
-    "es",
-    "fa",
-    "fi",
-    "fr",
-    "gd",
-    "gl",
-    "hr",
-    "hu",
-    "id",
-    "it",
-    "ja",
-    "nl",
-    "nn",
-    "pl",
-    "pt",
-    "ru",
-    "sv",
-    "zh_Hant"
+    "tr"
   ]
+
+config :ex_cldr, default_locale: "tr"
+
+config :mobilizon, Timex.Gettext, default_locale: "tr"

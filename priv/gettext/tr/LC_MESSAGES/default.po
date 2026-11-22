@@ -24,7 +24,7 @@ msgstr ""
 #: lib/web/templates/email/registration_confirmation.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Activate my account"
-msgstr ""
+msgstr "Hesabımı etkinleştir"
 
 #: lib/web/templates/email/email.html.heex:150
 #: lib/web/templates/email/email.text.eex:9
@@ -60,7 +60,7 @@ msgstr ""
 #: lib/web/email/user.ex:26
 #, elixir-autogen, elixir-format
 msgid "Instructions to confirm your Mobilizon account on %{instance}"
-msgstr ""
+msgstr "%{instance} üyeliğinizi doğrulama talimatları"
 
 #: lib/web/email/admin.ex:22
 #, elixir-autogen, elixir-format
@@ -81,7 +81,7 @@ msgstr ""
 #: lib/web/templates/email/event_participation_approved.text.eex:1
 #, elixir-autogen, elixir-format
 msgid "Participation approved"
-msgstr ""
+msgstr "Başvuru kabul edildi"
 
 #: lib/web/templates/email/password_reset.html.heex:18
 #: lib/web/templates/email/password_reset.text.eex:1
@@ -97,17 +97,17 @@ msgstr ""
 #: lib/web/templates/email/registration_confirmation.text.eex:5
 #, elixir-autogen, elixir-format
 msgid "You created an account on %{host} with this email address. You are one click away from activating it. If this wasn't you, please ignore this email."
-msgstr ""
+msgstr "%{host} üzerinde bu e-posta adresiyle bir hesap oluşturdunuz. Hesabınızı etkinleştirmek için bir tık kaldı. Bu işlemi siz yapmadıysanız bu e-postayı yok sayın."
 
 #: lib/web/email/participation.ex:115
 #, elixir-autogen, elixir-format
 msgid "Your participation to event %{title} has been approved"
-msgstr ""
+msgstr "%{title} için başvurunuz kabul edildi"
 
 #: lib/web/email/participation.ex:67
 #, elixir-autogen, elixir-format
 msgid "Your participation to event %{title} has been rejected"
-msgstr ""
+msgstr "%{title} için başvurunuz reddedildi"
 
 #: lib/web/email/event.ex:44
 #, elixir-autogen, elixir-format
@@ -132,7 +132,7 @@ msgstr ""
 #: lib/web/email/participation.ex:142
 #, elixir-autogen, elixir-format
 msgid "Confirm your participation to event %{title}"
-msgstr ""
+msgstr "%{title} için başvurunuzu doğrulayın"
 
 #: lib/web/templates/api/privacy.html.heex:106
 #, elixir-autogen, elixir-format
@@ -700,18 +700,18 @@ msgstr ""
 #: lib/web/templates/email/anonymous_participation_confirmation.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "Confirm my e-mail address"
-msgstr ""
+msgstr "E-posta adresimi doğrula"
 
 #: lib/web/templates/email/anonymous_participation_confirmation.html.heex:18
 #: lib/web/templates/email/anonymous_participation_confirmation.text.eex:1
 #, elixir-autogen, elixir-format
 msgid "Confirm your e-mail"
-msgstr ""
+msgstr "E-postanızı doğrulayın"
 
 #: lib/web/templates/email/anonymous_participation_confirmation.text.eex:3
 #, elixir-autogen, elixir-format
 msgid "Hi there! You just registered to join this event: « %{title} ». Please confirm the e-mail address you provided:"
-msgstr ""
+msgstr "Merhaba! « %{title} » ilanına başvurdunuz. Lütfen sağladığınız e-posta adresini doğrulayın:"
 
 #: lib/web/templates/email/email.html.heex:142
 #: lib/web/templates/email/email.text.eex:8
@@ -722,7 +722,7 @@ msgstr ""
 #: lib/web/templates/email/registration_confirmation.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "You created an account on <b>%{host}</b> with this email address. You are one click away from activating it."
-msgstr ""
+msgstr "<b>%{host}</b> üzerinde bu e-posta adresiyle bir hesap oluşturdunuz. Hesabınızı etkinleştirmek için bir tık kaldı."
 
 #: lib/web/templates/email/report.html.heex:18
 #, elixir-autogen, elixir-format
@@ -772,7 +772,7 @@ msgstr ""
 #: lib/web/templates/email/pending_participation_notification.text.eex:1
 #, elixir-autogen, elixir-format
 msgid "A request is pending!"
-msgstr ""
+msgstr "Yeni bir başvuru var!"
 
 #: lib/web/templates/email/before_event_notification.html.heex:18
 #: lib/web/templates/email/before_event_notification.text.eex:1
@@ -806,7 +806,7 @@ msgstr ""
 #: lib/web/templates/email/event_participation_approved.text.eex:7
 #, elixir-autogen, elixir-format
 msgid "Good news: one of the event organizers just approved your request. Update your calendar, because you're on the guest list now!"
-msgstr ""
+msgstr "Güzel haber: başvurunuz dernek tarafından kabul edildi. Misafirlik gününe ilişkin bilgileri takviminize ekleyebilirsiniz."
 
 #: lib/web/templates/email/email_changed_new.html.heex:47
 #, elixir-autogen, elixir-format
@@ -835,7 +835,7 @@ msgstr ""
 #: lib/web/templates/email/registration_confirmation.text.eex:7
 #, elixir-autogen, elixir-format
 msgid "If you didn't trigger this email, you may safely ignore it."
-msgstr ""
+msgstr "Bu e-postayı siz başlatmadıysanız güvenle yok sayabilirsiniz."
 
 #: lib/web/templates/email/before_event_notification.html.heex:82
 #: lib/web/templates/email/before_event_notification.text.eex:6
@@ -864,13 +864,13 @@ msgstr ""
 #: lib/web/templates/email/pending_participation_notification.text.eex:8
 #, elixir-autogen, elixir-format
 msgid "Manage pending requests"
-msgstr ""
+msgstr "Başvuruları değerlendir"
 
 #: lib/web/templates/email/registration_confirmation.html.heex:18
 #: lib/web/templates/email/registration_confirmation.text.eex:1
 #, elixir-autogen, elixir-format
 msgid "Nearly there!"
-msgstr ""
+msgstr "Son bir adım!"
 
 #: lib/web/templates/email/email_changed_old.html.heex:18
 #: lib/web/templates/email/email_changed_old.text.eex:1
@@ -892,7 +892,7 @@ msgstr ""
 #: lib/web/templates/email/event_participation_rejected.text.eex:1
 #, elixir-autogen, elixir-format
 msgid "Sorry! You're not going."
-msgstr ""
+msgstr "Başvurunuz kabul edilmedi."
 
 #: lib/web/templates/email/event_updated.html.heex:93
 #, elixir-autogen, elixir-format
@@ -926,7 +926,7 @@ msgstr ""
 #: lib/web/templates/email/event_participation_rejected.text.eex:7
 #, elixir-autogen, elixir-format
 msgid "Unfortunately, the organizers rejected your request."
-msgstr ""
+msgstr "Maalesef başvurunuz dernek tarafından reddedildi."
 
 #: lib/web/templates/email/email_changed_new.html.heex:68
 #, elixir-autogen, elixir-format
@@ -949,7 +949,7 @@ msgstr ""
 #: lib/web/templates/email/event_participation_confirmed.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "Visit event page"
-msgstr ""
+msgstr "İlanı görüntüle"
 
 #: lib/web/templates/email/event_updated.html.heex:155
 #, elixir-autogen, elixir-format
@@ -973,31 +973,31 @@ msgstr ""
 #: lib/web/templates/email/event_participation_confirmed.text.eex:6
 #, elixir-autogen, elixir-format
 msgid "Would you wish to update or cancel your attendance, simply access the event page through the link above and click on the Attending button."
-msgstr ""
+msgstr "Başvurunuzu güncellemek veya iptal etmek için yukarıdaki bağlantıdan ilan sayfasına gidin."
 
 #: lib/web/templates/email/pending_participation_notification.html.heex:106
 #: lib/web/templates/email/pending_participation_notification.text.eex:10
 #, elixir-autogen, elixir-format
 msgid "You are receiving this email because you chose to get notifications for pending attendance requests to your events. You can disable or change your notification settings in your user account settings under « Notifications »."
-msgstr ""
+msgstr "Bu e-postayı, ilanlarınıza gelen başvurular için bildirim almayı seçtiğiniz için alıyorsunuz. Bildirim tercihlerinizi hesap ayarlarınızdaki « Bildirimler » bölümünden değiştirebilirsiniz."
 
 #: lib/web/templates/email/event_participation_rejected.text.eex:5
 #, elixir-autogen, elixir-format
 msgid "You issued a request to attend %{title}."
-msgstr ""
+msgstr "%{title} ilanına başvuru yapmıştınız."
 
 #: lib/web/templates/email/event_participation_approved.text.eex:5
 #: lib/web/templates/email/event_participation_confirmed.text.eex:3
 #, elixir-autogen, elixir-format
 msgid "You recently requested to attend %{title}."
-msgstr ""
+msgstr "%{title} ilanına başvuru yapmıştınız."
 
 #: lib/web/templates/email/event_participation_approved.html.heex:18
 #: lib/web/templates/email/event_participation_confirmed.html.heex:18
 #: lib/web/templates/email/event_participation_confirmed.text.eex:1
 #, elixir-autogen, elixir-format
 msgid "You're going!"
-msgstr ""
+msgstr "Başvurunuz kabul edildi!"
 
 #: lib/web/templates/email/email_changed_new.html.heex:85
 #: lib/web/templates/email/email_changed_new.text.eex:5
@@ -1165,12 +1165,12 @@ msgstr ""
 #: lib/web/templates/email/event_participation_confirmed.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "You recently requested to attend <b>%{title}</b>."
-msgstr ""
+msgstr "<b>%{title}</b> ilanına başvuru yapmıştınız."
 
 #: lib/web/email/participation.ex:91
 #, elixir-autogen, elixir-format
 msgid "Your participation to event %{title} has been confirmed"
-msgstr ""
+msgstr "%{title} için başvurunuz onaylandı"
 
 #: lib/web/templates/email/report.html.heex:54
 #, elixir-autogen, elixir-format
@@ -1243,12 +1243,12 @@ msgstr ""
 #: lib/web/templates/email/anonymous_participation_confirmation.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Hi there! You just registered to join this event: « <b>%{title}</b> ». Please confirm the e-mail address you provided:"
-msgstr ""
+msgstr "Merhaba! « <b>%{title}</b> » ilanına başvurdunuz. Lütfen sağladığınız e-posta adresini doğrulayın:"
 
 #: lib/web/templates/email/event_participation_rejected.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "You issued a request to attend <b>%{title}</b>."
-msgstr ""
+msgstr "<b>%{title}</b> ilanına başvuru yapmıştınız."
 
 #: lib/web/templates/email/event_updated.html.heex:83
 #, elixir-autogen, elixir-format
@@ -1619,8 +1619,7 @@ msgstr ""
 #, elixir-format, elixir-autogen
 msgid "You have one pending attendance request to process for the following event:"
 msgid_plural "You have %{number_participation_requests} attendance requests to process for the following event:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr "Aşağıdaki ilan için değerlendirmeniz gereken bir başvuru var:"
 
 #: lib/web/templates/email/admin_user_role_changed.html.heex:18
 #: lib/web/templates/email/admin_user_role_changed.text.eex:1
@@ -1672,7 +1671,7 @@ msgstr ""
 #: lib/web/templates/email/admin_user_confirmation.text.eex:3
 #, elixir-autogen, elixir-format
 msgid "Hi there! We just wanted to inform you that an administrator from %{instance} just manually confirmed your account."
-msgstr ""
+msgstr "%{instance} yöneticisi üyeliğinizi onayladı. Artık giriş yapabilirsiniz."
 
 #: lib/web/templates/email/admin_user_email_changed_old.html.heex:47
 #, elixir-autogen, elixir-format
@@ -1687,7 +1686,7 @@ msgstr ""
 #: lib/web/templates/email/admin_user_confirmation.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Hi there! We just wanted to inform you that an administrator from <b>%{instance}</b> just manually confirmed your account."
-msgstr ""
+msgstr "<b>%{instance}</b> yöneticisi üyeliğinizi onayladı. Artık giriş yapabilirsiniz."
 
 #: lib/web/templates/email/admin_user_confirmation.html.heex:96
 #: lib/web/templates/email/admin_user_email_changed_new.html.heex:62
@@ -1942,7 +1941,7 @@ msgstr ""
 #: lib/web/templates/email/registration_confirmation.text.eex:9
 #, elixir-autogen, elixir-format
 msgid "Activate my account:"
-msgstr ""
+msgstr "Hesabımı etkinleştir:"
 
 #: lib/web/email/follow.ex:49
 #, elixir-autogen, elixir-format
@@ -1986,7 +1985,7 @@ msgstr ""
 #: lib/web/templates/email/event_participation_confirmed.html.heex:122
 #, elixir-autogen, elixir-format
 msgid "Cancel my attendance"
-msgstr ""
+msgstr "Başvuruyu iptal et"
 
 #: lib/web/templates/email/anonymous_participation_confirmation.html.heex:90
 #: lib/web/templates/email/event_participation_confirmed.html.heex:99
@@ -2020,23 +2019,23 @@ msgstr ""
 #: lib/web/templates/email/user_pending.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Login to view the list of pending users"
-msgstr ""
+msgstr "Bekleyen üyelikleri görmek için giriş yapın"
 
 #: lib/web/templates/email/user_pending.text.eex:3
 #, elixir-autogen, elixir-format
 msgid "Login to view the list of pending users:"
-msgstr ""
+msgstr "Bekleyen üyelikleri görmek için giriş yapın:"
 
 #: lib/web/templates/email/user_pending.html.heex:47
 #: lib/web/templates/email/user_pending.text.eex:1
 #, elixir-autogen, elixir-format
 msgid "New pending user from %{user} on %{instance}"
-msgstr ""
+msgstr "%{instance} üzerinde %{user} tarafından yeni üyelik başvurusu"
 
 #: lib/web/templates/email/user_pending.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "New pending user on <b>%{instance}</b>"
-msgstr ""
+msgstr "<b>%{instance}</b> üzerinde yeni üyelik başvurusu"
 
 #: lib/web/email/admin.ex:38
 #, elixir-autogen, elixir-format

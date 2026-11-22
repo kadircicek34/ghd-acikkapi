@@ -31,10 +31,13 @@ export default defineConfig(({ command }) => {
         //   enabled: true,
         // },
         manifest: {
-          name: "Mobilizon",
-          short_name: "Mobilizon",
+          name: "GHD Açık Kapı",
+          short_name: "Açık Kapı",
           orientation: "portrait-primary",
-          theme_color: "#ffd599",
+          theme_color: "#0F1E3D",
+          background_color: "#FBF9F4",
+          description:
+            "Global Hukukçular Derneği — hukuk öğrencileri ve yeni mezunlar için yarım günlük misafirlik başvuru platformu.",
           icons: [
             {
               src: "./img/icons/android-chrome-192x192.png",

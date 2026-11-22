@@ -1,94 +1,52 @@
 <template>
-  <section class="container mx-auto max-w-2xl">
-    <h2 class="text-2xl">
-      {{ t("You wish to participate to the following event") }}
-    </h2>
-    <EventListViewCard v-if="event" :event="event" />
-    <div class="flex flex-wrap gap-4 items-center w-full my-6">
-      <div class="bg-white dark:bg-zinc-700 rounded-md p-4 flex-1">
-        <router-link :to="{ name: RouteName.EVENT_PARTICIPATE_WITH_ACCOUNT }">
-          <figure class="flex justify-center my-2">
-            <img
-              src="/img/undraw_profile.svg"
-              alt="Profile illustration"
-              width="128"
-              height="128"
-            />
-          </figure>
-          <o-button variant="primary">{{
-            t("I have a Mobilizon account")
-          }}</o-button>
-        </router-link>
-        <p>
-          <small>
-            {{
-              t("Either on the {instance} instance or on another instance.", {
-                instance: host,
-              })
-            }}
-          </small>
-          <o-tooltip
-            variant="dark"
-            :label="
-              t(
-                'Mobilizon is a federated network. You can interact with this event from a different server.'
-              )
-            "
-          >
-            <o-icon size="small" icon="help-circle-outline" />
-          </o-tooltip>
+  <section class="container mx-auto max-w-3xl px-4 py-10">
+    <p class="ghd-kicker">GHD Açık Kapı</p>
+    <h1 class="mt-2 text-4xl font-bold text-ghd-navy">
+      Başvuru yönteminizi seçin
+    </h1>
+    <p class="mt-3 text-sm leading-relaxed text-ghd-muted">
+      Açık Kapı başvuruları için hesap açmanız gerekmez. E-posta adresinizle
+      doğrulama yaparak ya da mevcut profilinizle başvurabilirsiniz.
+    </p>
+    <EventListViewCard v-if="event" :event="event" class="mt-6" />
+    <div class="mt-6 grid gap-4 sm:grid-cols-2">
+      <div class="ghd-card rounded-sm p-6">
+        <h2 class="text-2xl font-bold text-ghd-navy">Hesap açmadan</h2>
+        <p class="mt-2 text-sm leading-relaxed text-ghd-muted">
+          Adınız, hukuk statünüz ve kısa motivasyon notunuzla başvurun.
+          Başvurunuz e-posta ile doğrulanır.
         </p>
-      </div>
-      <div
-        class="bg-white dark:bg-zinc-700 rounded-md p-4 flex-1"
-        v-if="
-          event &&
-          anonymousParticipationAllowed &&
-          hasAnonymousEmailParticipationMethod
-        "
-      >
         <router-link
-          :to="{ name: RouteName.EVENT_PARTICIPATE_WITHOUT_ACCOUNT }"
-          v-if="event.local"
+          class="ghd-btn ghd-btn-gold mt-5 w-full"
+          :to="{
+            name: RouteName.EVENT_PARTICIPATE_WITHOUT_ACCOUNT,
+            params: { uuid: event?.uuid },
+          }"
+          >Hesap açmadan başvur</router-link
         >
-          <figure class="flex justify-center my-2">
-            <img
-              width="128"
-              height="128"
-              src="/img/undraw_mail_2.svg"
-              alt="Privacy illustration"
-            />
-          </figure>
-          <o-button variant="primary">{{
-            t("I don't have a Mobilizon account")
-          }}</o-button>
-        </router-link>
-        <a :href="`${event.url}/participate/without-account`" v-else>
-          <figure class="flex justify-center my-2">
-            <img
-              src="/img/undraw_mail_2.svg"
-              width="128"
-              height="128"
-              alt="Privacy illustration"
-            />
-          </figure>
-          <o-button variant="primary">{{
-            t("I don't have a Mobilizon account")
-          }}</o-button>
-        </a>
-        <p>
-          <small>{{ t("Participate using your email address") }}</small>
-          <br />
-          <small v-if="!event.local">
-            {{ t("You will be redirected to the original instance") }}
-          </small>
+      </div>
+      <div class="ghd-card rounded-sm p-6">
+        <h2 class="text-2xl font-bold text-ghd-navy">Hesabımla</h2>
+        <p class="mt-2 text-sm leading-relaxed text-ghd-muted">
+          GHD Açık Kapı hesabınız veya başka bir uyumlu hesap ile başvurmak
+          için giriş yapın.
         </p>
+        <router-link
+          class="ghd-btn ghd-btn-outline mt-5 w-full"
+          :to="{
+            name: RouteName.EVENT_PARTICIPATE_WITH_ACCOUNT,
+            params: { uuid: event?.uuid },
+          }"
+          >Hesabımla başvur</router-link
+        >
       </div>
     </div>
-    <div class="has-text-centered">
-      <o-button tag="a" variant="text" @click="router.go(-1)">{{
-        t("Back to previous page")
-      }}</o-button>
+    <div class="mt-6">
+      <router-link
+        class="ghd-link text-sm"
+        :to="{ name: RouteName.EVENT, params: { uuid: event?.uuid } }"
+        >İlana dön</router-link
+      >
     </div>
   </section>
 </template>
@@ -96,48 +54,15 @@
 import EventListViewCard from "@/components/Event/EventListViewCard.vue";
 import RouteName from "@/router/name";
 import { useFetchEvent } from "@/composition/apollo/event";
-import { useAnonymousParticipationConfig } from "@/composition/apollo/config";
 import { computed } from "vue";
-import { useRouter } from "vue-router";
 import { useHead } from "@/utils/head";
-import { useI18n } from "vue-i18n";
 
 const props = defineProps<{ uuid: string }>();
 
 const { event } = useFetchEvent(computed(() => props.uuid));
 
-const { anonymousParticipationConfig } = useAnonymousParticipationConfig();
-
-const router = useRouter();
-
-const { t } = useI18n({ useScope: "global" });
-
 useHead({
-  title: computed(() => t("Unlogged participation")),
+  title: computed(() => "Başvuru yöntemi"),
   meta: [{ name: "robots", content: "noindex" }],
 });
-
-const host = computed((): string => {
-  return window.location.hostname;
-});
-
-const anonymousParticipationAllowed = computed((): boolean | undefined => {
-  return event.value?.options.anonymousParticipation;
-});
-
-const hasAnonymousEmailParticipationMethod = computed(
-  (): boolean | undefined => {
-    return (
-      anonymousParticipationConfig.value?.allowed &&
-      anonymousParticipationConfig.value?.validation.email.enabled
-    );
-  }
-);
 </script>
-<style lang="scss" scoped>
-.column > a {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-</style>

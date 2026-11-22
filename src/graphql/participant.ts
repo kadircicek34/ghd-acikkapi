@@ -196,6 +196,8 @@ export const PARTICIPANT_QUERY_FRAGMENT = gql`
     metadata {
       cancellationToken
       message
+      name
+      lawStatus
     }
     insertedAt
   }

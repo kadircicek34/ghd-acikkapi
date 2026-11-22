@@ -10,7 +10,7 @@
               <router-link
                 class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 :to="{ name: RouteName.ABOUT_INSTANCE }"
-                >{{ t("About this instance") }}</router-link
+                >Platform hakkında</router-link
               >
             </p>
             <p class="menu-label has-text-grey-dark">
@@ -38,13 +38,6 @@
                   >{{ t("Instance rules") }}</router-link
                 >
               </li>
-              <li>
-                <router-link
-                  class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                  :to="{ name: RouteName.GLOSSARY }"
-                  >{{ t("Glossary") }}</router-link
-                >
-              </li>
             </ul>
           </div>
         </aside>
@@ -53,50 +46,54 @@
         </div>
       </div>
     </section>
-    <div class="bg-secondary dark:bg-gray-700 p-6">
+    <div class="bg-ghd-navy p-6 text-ghd-cream">
       <div class="container mx-auto">
-        <h1 class="text-4xl font-bold text-black/70">
-          {{ t("Powered by Mobilizon") }}
+        <p class="ghd-kicker !text-ghd-gold">GHD Açık Kapı</p>
+        <h1 class="mt-2 text-4xl font-bold text-ghd-cream">
+          Hukuk pratiğine açılan yarım günlük kapı.
         </h1>
-        <p>
-          {{
-            t(
-              "A user-friendly, emancipatory and ethical tool for gathering, organising, and mobilising."
-            )
-          }}
+        <p class="mt-3 max-w-2xl text-ghd-cream/75">
+          Hukuk öğrencileri ve yeni mezunlar için yarım günlük misafirlik
+          programı. Başvurular e-posta doğrulaması ve dernek değerlendirmesi ile
+          alınır.
         </p>
-        <o-button
-          tag="a"
-          icon-left="open-in-new"
-          class="text-2xl bg-primary text-white leading-6"
-          href="https://mobilizon.org"
-          >{{ t("Learn more") }}</o-button
-        >
+        <div class="mt-5 flex flex-wrap gap-3">
+          <router-link class="ghd-btn ghd-btn-gold" :to="GHD_EVENT_PATH"
+            >Başvur</router-link
+          >
+          <a
+            class="ghd-btn ghd-btn-outline !border-ghd-cream/40 !text-ghd-cream"
+            :href="GHD_MAIN_SITE_URL"
+            rel="noopener"
+            target="_blank"
+            >globalhukukcular.com</a
+          >
+        </div>
       </div>
     </div>
     <div v-if="!currentUser || !currentUser.id" class="bg-purple-2 pb-3">
       <div class="container mx-auto text-center py-10 px-6">
         <div class="flex flex-wrap">
           <div class="flex-1" v-if="config && config.registrationsOpen">
-            <h2 class="text-4xl text-violet-1 font-bold">
-              {{ t("Register on this instance") }}
+            <h2 class="text-3xl text-ghd-navy font-bold">
+              GHD üyeliği
             </h2>
-            <o-button
-              tag="router-link"
-              class="bg-secondary text-lg text-black"
+            <p class="mb-3 text-sm text-ghd-muted">
+              E-posta doğrulaması ve yönetici onayı ile üyelik başvurusu.
+            </p>
+            <router-link
+              class="ghd-btn ghd-btn-primary"
               :to="{ name: RouteName.REGISTER }"
-              >{{ t("Create an account") }}</o-button
+              >Üyelik başvurusu</router-link
             >
           </div>
           <div class="flex-1">
-            <h2 class="text-4xl text-violet-1 font-bold">
-              {{ t("Find another instance") }}
-            </h2>
-            <o-button
-              tag="a"
-              class="bg-secondary text-lg text-black"
-              href="https://mobilizon.org"
-              >{{ t("Pick an instance") }}</o-button
+            <h2 class="text-3xl text-ghd-navy font-bold">Açık Kapı ilanı</h2>
+            <p class="mb-3 text-sm text-ghd-muted">
+              Hesap açmadan yarım günlük misafirliğe başvurun.
+            </p>
+            <router-link class="ghd-btn ghd-btn-outline" :to="GHD_EVENT_PATH"
+              >İlanı incele</router-link
             >
           </div>
         </div>
@@ -114,6 +111,7 @@ import { computed } from "vue";
 import { useCurrentUserClient } from "@/composition/apollo/user";
 import { useI18n } from "vue-i18n";
 import { useHead } from "@/utils/head";
+import { GHD_EVENT_PATH, GHD_MAIN_SITE_URL } from "@/ghd/constants";
 
 const { currentUser } = useCurrentUserClient();
 

@@ -125,7 +125,7 @@
       rel="nofollow"
       tag="router-link"
       :to="{
-        name: RouteName.EVENT_PARTICIPATE_LOGGED_OUT,
+        name: RouteName.EVENT_PARTICIPATE_WITHOUT_ACCOUNT,
         params: { uuid: event.uuid },
       }"
       v-else-if="!participation && hasAnonymousParticipationMethods"

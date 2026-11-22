@@ -12,10 +12,23 @@ defmodule Mobilizon.Events.Participant.Metadata do
           confirmation_token: String.t(),
           cancellation_token: String.t(),
           message: String.t(),
-          locale: String.t()
+          locale: String.t(),
+          name: String.t() | nil,
+          law_status: String.t() | nil,
+          kvkk_accepted: boolean() | nil
         }
 
-  @attrs [:email, :confirmation_token, :cancellation_token, :message, :locale, :timezone]
+  @attrs [
+    :email,
+    :confirmation_token,
+    :cancellation_token,
+    :message,
+    :locale,
+    :timezone,
+    :name,
+    :law_status,
+    :kvkk_accepted
+  ]
 
   @derive Jason.Encoder
   embedded_schema do
@@ -25,6 +38,9 @@ defmodule Mobilizon.Events.Participant.Metadata do
     field(:message, :string)
     field(:locale, :string)
     field(:timezone, :string)
+    field(:name, :string)
+    field(:law_status, :string)
+    field(:kvkk_accepted, :boolean)
   end
 
   @doc false

@@ -50,6 +50,8 @@ defmodule Mobilizon.GraphQL.Schema.Events.ParticipantType do
 
     field(:message, :string, description: "The eventual message the participant left")
     field(:locale, :string, description: "The participant's locale")
+    field(:name, :string, description: "The applicant's full name")
+    field(:law_status, :string, description: "The applicant's legal status (student or graduate)")
   end
 
   @desc """
@@ -101,6 +103,9 @@ defmodule Mobilizon.GraphQL.Schema.Events.ParticipantType do
       arg(:actor_id, non_null(:id), description: "The actor ID for the participant")
       arg(:email, :string, description: "The anonymous participant's email")
       arg(:message, :string, description: "The anonymous participant's message")
+      arg(:name, :string, description: "The anonymous applicant's full name")
+      arg(:law_status, :string, description: "The anonymous applicant's legal status")
+      arg(:kvkk_accepted, :boolean, description: "Whether the applicant accepted the privacy notice")
       arg(:locale, :string, description: "The anonymous participant's locale")
       arg(:timezone, :timezone, description: "The anonymous participant's timezone")
       middleware(Rajska.QueryAuthorization, permit: :all, rule: :"write:participation")

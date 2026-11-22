@@ -3,7 +3,15 @@
     class="container mx-auto max-w-screen-sm"
     v-if="!currentUser?.isLoggedIn"
   >
-    <h1 class="text-4xl">{{ t("Welcome back!") }}</h1>
+    <p class="ghd-kicker">GHD Açık Kapı</p>
+    <h1 class="mt-2 text-4xl font-bold text-ghd-navy">{{ t("Welcome back!") }}</h1>
+    <o-notification variant="info" :closable="false">
+      Hesap, üyelik başvurusu ve başvurularınızı takip etmek içindir. Açık
+      Kapı ilanına
+      <router-link class="ghd-link" :to="GHD_EVENT_PATH"
+        >hesap açmadan da başvurabilirsiniz</router-link
+      >.
+    </o-notification>
     <o-notification
       v-if="errorCode === LoginErrorCode.NEED_TO_LOGIN"
       title="Info"
@@ -149,6 +157,7 @@ import { useCurrentUserClient } from "@/composition/apollo/user";
 import { useHead } from "@/utils/head";
 import { enumTransformer, useRouteQuery } from "vue-use-route-query";
 import { useCurrentUserIdentities } from "@/composition/apollo/actor";
+import { GHD_EVENT_PATH } from "@/ghd/constants";
 
 const { t } = useI18n({ useScope: "global" });
 const router = useRouter();

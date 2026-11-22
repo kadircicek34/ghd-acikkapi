@@ -1,100 +1,157 @@
 <template>
-  <footer
-    class="bg-violet-2 color-secondary flex flex-col items-center py-3 px-3"
-    ref="footer"
-  >
-    <ul
-      class="inline-flex flex-wrap justify-around gap-3 text-lg text-white underline decoration-yellow-1"
-    >
-      <li>
-        <o-select
-          class="text-black dark:text-white"
-          :aria-label="t('Language')"
-          v-model="locale"
-          :placeholder="t('Select a language')"
-        >
-          <option
-            v-for="(language, lang) in langs"
-            :value="lang"
-            :key="lang"
-            :selected="isLangSelected(lang)"
-          >
-            {{ language }}
-          </option>
-        </o-select>
-      </li>
-      <li>
-        <router-link :to="{ name: RouteName.ABOUT }">{{
-          t("About")
-        }}</router-link>
-      </li>
-      <li>
-        <router-link :to="{ name: RouteName.TERMS }">{{
-          t("Terms")
-        }}</router-link>
-      </li>
-      <li>
-        <a
-          rel="external"
-          hreflang="en"
-          href="https://framagit.org/framasoft/mobilizon/blob/main/LICENSE"
-        >
-          {{ t("License") }}
-        </a>
-      </li>
-      <li>
-        <a href="#navbar">{{ t("Back to top") }}</a>
-      </li>
-    </ul>
-    <div class="text-center flex-1 pt-2 text-yellow-1">
-      <i18n-t
-        tag="span"
-        keypath="Powered by {mobilizon}. © 2018 - {date} The Mobilizon Contributors - Made with the financial support of {contributors}."
+  <footer class="ghd-footer" ref="footer">
+    <div class="container mx-auto px-4 py-12">
+      <div class="grid gap-10 md:grid-cols-[1.3fr,0.7fr,0.7fr,0.7fr]">
+        <div>
+          <div class="flex items-center gap-3">
+            <img
+              src="/img/ghd-emblem.png"
+              alt=""
+              width="58"
+              height="58"
+              class="h-14 w-14 rounded-full object-cover ring-1 ring-ghd-gold/50"
+            />
+            <div>
+              <p class="ghd-display text-2xl font-bold text-white">
+                GHD Açık Kapı
+              </p>
+              <p class="text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-ghd-gold">
+                Global Hukukçular Derneği
+              </p>
+            </div>
+          </div>
+          <p class="mt-4 max-w-sm text-sm leading-relaxed text-white/65">
+            Hukuk öğrencileri ve yeni mezunlar için yarım günlük misafirlik
+            programı. Başvurular e-posta doğrulaması ve manuel değerlendirme
+            ile alınır.
+          </p>
+        </div>
+
+        <div>
+          <p class="ghd-footer-title">Platform</p>
+          <ul class="mt-3 space-y-2">
+            <li>
+              <router-link class="ghd-footer-link" :to="{ name: RouteName.HOME }"
+                >Açık Kapı</router-link
+              >
+            </li>
+            <li>
+              <router-link
+                class="ghd-footer-link"
+                :to="{ name: RouteName.HOME, hash: '#ilan' }"
+                >İlan</router-link
+              >
+            </li>
+            <li>
+              <router-link
+                class="ghd-footer-link"
+                :to="{ name: RouteName.REGISTER }"
+                >Üyelik başvurusu</router-link
+              >
+            </li>
+            <li>
+              <router-link class="ghd-footer-link" :to="{ name: RouteName.LOGIN }"
+                >Giriş</router-link
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="ghd-footer-title">Kurumsal</p>
+          <ul class="mt-3 space-y-2">
+            <li>
+              <a
+                class="ghd-footer-link"
+                :href="GHD_MAIN_SITE_URL"
+                rel="noopener"
+                target="_blank"
+                >globalhukukcular.com</a
+              >
+            </li>
+            <li>
+              <router-link class="ghd-footer-link" :to="{ name: RouteName.ABOUT }"
+                >Hakkında</router-link
+              >
+            </li>
+            <li>
+              <router-link class="ghd-footer-link" :to="{ name: RouteName.TERMS }"
+                >Kullanım koşulları</router-link
+              >
+            </li>
+            <li>
+              <router-link class="ghd-footer-link" :to="{ name: RouteName.PRIVACY }"
+                >KVKK ve gizlilik</router-link
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="ghd-footer-title">Kaynak</p>
+          <ul class="mt-3 space-y-2">
+            <li>
+              <a
+                class="ghd-footer-link"
+                :href="GHD_SOURCE_URL"
+                rel="noopener"
+                target="_blank"
+                >Özelleştirilmiş kaynak kod</a
+              >
+            </li>
+            <li>
+              <a
+                class="ghd-footer-link"
+                :href="`${GHD_SOURCE_URL}/blob/main/LICENSE`"
+                rel="noopener"
+                target="_blank"
+                >Lisans · AGPL-3.0</a
+              >
+            </li>
+            <li>
+              <a class="ghd-footer-link" href="#navbar">Sayfa başına dön</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div
+        class="mt-10 flex flex-col gap-2 border-t border-white/10 pt-5 text-xs text-white/45 sm:flex-row sm:items-center sm:justify-between"
       >
-        <template #mobilizon>
-          <a
-            rel="external"
-            aria-label="mobilizon.org"
-            class="text-white underline decoration-yellow-1"
-            href="https://mobilizon.org"
-            >{{ t("Mobilizon") }}</a
-          >
-        </template>
-        <template #date
-          ><span>{{ new Date().getFullYear() }}</span></template
-        >
-        <template #contributors>
-          <span>{{ t("more than 1360 contributors") }}</span>
-        </template>
-      </i18n-t>
+        <p>© {{ new Date().getFullYear() }} Global Hukukçular Derneği</p>
+        <p>GHD Açık Kapı · Hukuk öğrencileri ve yeni mezunlar için.</p>
+      </div>
     </div>
   </footer>
 </template>
+
 <script setup lang="ts">
-import { saveLocaleData } from "@/utils/auth";
-import { loadLanguageAsync } from "@/utils/i18n";
-import RouteName from "../router/name";
-import langs from "../i18n/langs.json";
-import { watch } from "vue";
-import { useI18n } from "vue-i18n";
-
-const { locale, t } = useI18n({ useScope: "global" });
-
-watch(locale, async () => {
-  if (locale) {
-    console.debug("Setting locale from footer");
-    await loadLanguageAsync(locale.value as string);
-    saveLocaleData(locale.value as string);
-  }
-});
-
-const isLangSelected = (lang: string): boolean => {
-  return lang === locale.value;
-};
+import RouteName from "@/router/name";
+import { GHD_MAIN_SITE_URL, GHD_SOURCE_URL } from "@/ghd/constants";
 </script>
 
-<style lang="scss">
-footer > ul > li {
-  margin: auto 0;
+<style scoped>
+.ghd-footer {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(201, 162, 39, 0.1), transparent 24rem),
+    #0b1526;
+  color: #f7f2e7;
+}
+.ghd-footer-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #c9a227;
+}
+.ghd-footer-link {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.68);
+  text-decoration: none;
+}
+.ghd-footer-link:hover {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 </style>

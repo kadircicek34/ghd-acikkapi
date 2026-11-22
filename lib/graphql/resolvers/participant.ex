@@ -42,6 +42,8 @@ defmodule Mobilizon.GraphQL.Resolvers.Participant do
       ) do
     with {:has_event, {:ok, %Event{} = event}} <-
            {:has_event, Mobilizon.Events.get_event_with_preload(event_id)},
+         {:application_valid, :ok} <-
+           {:application_valid, validate_application(event, args)},
          {:anonymous_participation_enabled, true} <-
            {:anonymous_participation_enabled,
             event.local == true && Config.anonymous_participation?() &&
@@ -87,6 +89,9 @@ defmodule Mobilizon.GraphQL.Resolvers.Participant do
       {:has_event, _} ->
         {:error,
          dgettext("errors", "Event with this ID %{id} doesn't exist", id: inspect(event_id))}
+
+      {:application_valid, {:error, err}} ->
+        {:error, err}
 
       {:anonymous_participation_enabled, false} ->
         {:error, dgettext("errors", "Anonymous participation is not enabled")}
@@ -136,6 +141,51 @@ defmodule Mobilizon.GraphQL.Resolvers.Participant do
         {:error, dgettext("errors", "You are already a participant of this event")}
     end
   end
+
+  @spec ensure_capacity_for_acceptance(Event.t(), atom(), atom()) ::
+          :ok | {:error, String.t()}
+  defp ensure_capacity_for_acceptance(
+         %Event{options: %{maximum_attendee_capacity: max}} = event,
+         old_role,
+         :participant
+       )
+       when is_integer(max) and max > 0 and old_role != :participant do
+    if Events.count_participant_participants(event.id) >= max do
+      {:error, dgettext("errors", "The event has already reached its maximum capacity")}
+    else
+      :ok
+    end
+  end
+
+  defp ensure_capacity_for_acceptance(_event, _old_role, _new_role), do: :ok
+
+  @spec validate_application(Event.t(), map()) :: :ok | {:error, String.t()}
+  defp validate_application(%Event{join_options: :restricted}, args) do
+    name = args |> Map.get(:name, "") |> to_string() |> String.trim()
+    law_status = Map.get(args, :law_status)
+    message = args |> Map.get(:message, "") |> to_string() |> String.trim()
+    kvkk_accepted = Map.get(args, :kvkk_accepted) == true
+
+    cond do
+      String.length(name) < 3 ->
+        {:error, dgettext("errors", "Please provide your full name")}
+
+      law_status not in ["student", "graduate"] ->
+        {:error, dgettext("errors", "Please select your legal status")}
+
+      String.length(message) < 10 ->
+        {:error,
+         dgettext("errors", "Please write a short motivation note (at least 10 characters)")}
+
+      not kvkk_accepted ->
+        {:error, dgettext("errors", "You must accept the privacy notice")}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp validate_application(_event, _args), do: :ok
 
   @spec check_anonymous_participation(String.t(), String.t()) ::
           {:ok, Event.t()} | {:error, String.t()}
@@ -251,7 +301,8 @@ defmodule Mobilizon.GraphQL.Resolvers.Participant do
           %Event{} = event = Events.get_event_with_preload!(event_id)
 
           if can_event_be_updated_by?(event, moderator_actor) do
-            with {:ok, _activity, participation} <-
+            with :ok <- ensure_capacity_for_acceptance(event, old_role, new_role),
+                 {:ok, _activity, participation} <-
                    Participations.update(participation, moderator_actor, new_role) do
               {:ok, participation}
             end

@@ -81,7 +81,7 @@ defmodule Mobilizon.Web.PageView do
   end
 
   def theme_color do
-    "#ffd599"
+    "#0F1E3D"
   end
 
   def language_direction(assigns) do
