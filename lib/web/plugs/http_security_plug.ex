@@ -102,7 +102,8 @@ defmodule Mobilizon.Web.Plugs.HTTPSecurityPlug do
     configured_script_src = Config.get([:http_security, :csp_policy, :script_src], []) || []
 
     script_src =
-      if Config.get(:env) == :dev or "'unsafe-inline'" in configured_script_src do
+      if Config.get(:env) == :dev or
+           Enum.any?(configured_script_src, &(String.trim(to_string(&1)) == "'unsafe-inline'")) do
         [@script_src, "'unsafe-inline' "]
       else
         [
@@ -119,7 +120,8 @@ defmodule Mobilizon.Web.Plugs.HTTPSecurityPlug do
     configured_style_src = Config.get([:http_security, :csp_policy, :style_src], []) || []
 
     style_src =
-      if Config.get(:env) == :dev or "'unsafe-inline'" in configured_style_src do
+      if Config.get(:env) == :dev or
+           Enum.any?(configured_style_src, &(String.trim(to_string(&1)) == "'unsafe-inline'")) do
         [@style_src, "'unsafe-inline' "]
       else
         @style_src
@@ -128,7 +130,8 @@ defmodule Mobilizon.Web.Plugs.HTTPSecurityPlug do
     style_src = [style_src] ++ [get_csp_config(:style_src, options)]
 
     style_src =
-      if Config.get(:env) == :dev or "'unsafe-inline'" in configured_style_src do
+      if Config.get(:env) == :dev or
+           Enum.any?(configured_style_src, &(String.trim(to_string(&1)) == "'unsafe-inline'")) do
         style_src
       else
         style_src ++ ["'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='"]
