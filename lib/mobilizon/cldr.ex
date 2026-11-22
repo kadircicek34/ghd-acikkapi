@@ -5,12 +5,8 @@ defmodule Mobilizon.Cldr do
 
   use Cldr,
     locales: Application.compile_env(:mobilizon, :cldr)[:locales],
-    add_fallback_locales: true,
-    gettext:
-      if(Application.compile_env(:mobilizon, :env) == :prod,
-        do: Mobilizon.Web.Gettext,
-        else: nil
-      ),
+    add_fallback_locales: false,
+    gettext: nil,
     providers: [Cldr.Number, Cldr.Calendar, Cldr.DateTime, Cldr.Language],
     precompile_transliterations: [{:latn, :arabext}]
 
