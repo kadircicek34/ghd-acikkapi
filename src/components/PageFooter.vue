@@ -100,15 +100,6 @@
               >
             </li>
             <li>
-              <a
-                class="ghd-footer-link"
-                :href="`${GHD_SOURCE_URL}/blob/main/LICENSE`"
-                rel="noopener"
-                target="_blank"
-                >Lisans · AGPL-3.0</a
-              >
-            </li>
-            <li>
               <a class="ghd-footer-link" href="#navbar">Sayfa başına dön</a>
             </li>
           </ul>
