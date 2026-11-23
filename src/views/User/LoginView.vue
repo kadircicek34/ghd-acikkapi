@@ -1,134 +1,250 @@
 <template>
   <section
-    class="container mx-auto max-w-screen-sm"
+    class="ghd-auth px-5 py-10 sm:px-8 sm:py-16"
     v-if="!currentUser?.isLoggedIn"
   >
-    <p class="ghd-kicker">GHD Açık Kapı</p>
-    <h1 class="mt-2 text-4xl font-bold text-ghd-navy">{{ t("Welcome back!") }}</h1>
-    <o-notification variant="info" :closable="false">
-      Açık Kapı ilanına başvurmak için e-posta doğrulamalı ve yönetici onaylı
-      üyelik hesabı gerekir. Henüz üyeliğiniz yoksa
-      <router-link class="ghd-link" :to="{ name: RouteName.REGISTER }"
-        >üyelik başvurusu</router-link
-      >
-      oluşturabilirsiniz.
-    </o-notification>
-    <o-notification
-      v-if="errorCode === LoginErrorCode.NEED_TO_LOGIN"
-      title="Info"
-      variant="info"
-      :aria-close-label="t('Close')"
-      >{{ t("You need to login.") }}</o-notification
+    <div
+      class="mx-auto grid w-full max-w-6xl items-stretch gap-6 lg:grid-cols-[1.02fr_0.98fr]"
     >
-    <o-notification
-      v-else-if="errorCode === LoginError.LOGIN_PROVIDER_ERROR"
-      variant="danger"
-      :aria-close-label="t('Close')"
-      >{{
-        t("Error while login with {provider}. Retry or login another way.", {
-          provider: currentProvider,
-        })
-      }}</o-notification
-    >
-    <o-notification
-      v-else-if="errorCode === LoginError.LOGIN_PROVIDER_NOT_FOUND"
-      variant="danger"
-      :aria-close-label="t('Close')"
-      >{{
-        t(
-          "Error while login with {provider}. This login provider doesn't exist.",
-          {
-            provider: currentProvider,
-          }
-        )
-      }}</o-notification
-    >
-    <o-notification
-      :title="t('Error')"
-      variant="danger"
-      v-for="error in errors"
-      :key="error"
-    >
-      {{ error }}
-    </o-notification>
-    <form @submit="loginAction" v-if="config?.auth?.databaseLogin">
-      <o-field
-        :label="t('Email')"
-        label-for="email"
-        :message="caseWarningText"
-        :type="caseWarningType"
-      >
-        <o-input
-          aria-required="true"
-          required
-          expanded
-          id="email"
-          type="email"
-          v-model="credentials.email"
-        />
-      </o-field>
+      <aside class="ghd-auth-panel order-2 p-7 sm:p-10 lg:order-1 lg:p-12">
+        <div class="relative z-10 flex h-full flex-col">
+          <div class="flex items-center gap-3">
+            <img
+              src="/img/ghd-emblem.png"
+              alt=""
+              width="52"
+              height="52"
+              class="h-12 w-12 rounded-full object-cover ring-1 ring-white/20"
+            />
+            <div>
+              <p
+                class="font-['Sora'] text-lg font-bold tracking-[-0.04em] text-white"
+              >
+                GHD Açık Kapı
+              </p>
+              <p
+                class="text-[0.56rem] font-extrabold uppercase tracking-[0.22em] text-ghd-gold"
+              >
+                Global Hukukçular Derneği
+              </p>
+            </div>
+          </div>
 
-      <o-field :label="t('Password')" label-for="password">
-        <o-input
-          aria-required="true"
-          id="password"
-          required
-          expanded
-          type="password"
-          password-reveal
-          v-model="credentials.password"
-        />
-      </o-field>
+          <div class="mt-14">
+            <p class="ghd-eyebrow !text-ghd-gold">Üye girişi</p>
+            <h1
+              class="mt-4 font-['Sora'] text-4xl font-bold leading-[0.98] tracking-[-0.055em] text-white sm:text-5xl"
+            >
+              Kapıyı<br />aralayın.
+            </h1>
+            <p class="mt-5 max-w-md text-base leading-relaxed text-white/60">
+              Hesabınıza giriş yapın; ilana başvurun, başvurunuzun durumunu
+              takip edin ve dernek duyurularından haberdar olun.
+            </p>
+          </div>
 
-      <p class="text-center my-2">
-        <o-button
-          variant="primary"
-          size="large"
-          type="submit"
-          :disabled="submitted"
-        >
-          {{ t("Login") }}
-        </o-button>
-      </p>
-      <!-- <o-loading :is-full-page="false" v-model="submitted" /> -->
+          <ul class="mt-10 space-y-3 text-sm text-white/60">
+            <li class="flex items-start gap-3">
+              <span
+                class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-ghd-gold/10 text-ghd-gold"
+                aria-hidden="true"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.4"
+                  class="h-3 w-3"
+                >
+                  <path d="m5 12 4 4L19 6" />
+                </svg>
+              </span>
+              E-posta doğrulamalı, yönetici onaylı üyelik
+            </li>
+            <li class="flex items-start gap-3">
+              <span
+                class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-ghd-gold/10 text-ghd-gold"
+                aria-hidden="true"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.4"
+                  class="h-3 w-3"
+                >
+                  <path d="m5 12 4 4L19 6" />
+                </svg>
+              </span>
+              Üç kişilik kontenjan, manuel değerlendirme
+            </li>
+            <li class="flex items-start gap-3">
+              <span
+                class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-ghd-gold/10 text-ghd-gold"
+                aria-hidden="true"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.4"
+                  class="h-3 w-3"
+                >
+                  <path d="m5 12 4 4L19 6" />
+                </svg>
+              </span>
+              Başvuru ve kabul sürecini tek yerden takip
+            </li>
+          </ul>
 
-      <div class="flex flex-wrap gap-2 mt-3">
-        <o-button
-          tag="router-link"
-          variant="text"
-          :to="{
-            name: RouteName.SEND_PASSWORD_RESET,
-            params: { email: credentials.email },
-          }"
-          >{{ t("Reset your password") }}</o-button
+          <p class="mt-auto pt-10 text-xs leading-relaxed text-white/30">
+            GHD Açık Kapı, Global Hukukçular Derneği'nin hukuk öğrencileri ve
+            yeni mezunlar için yürüttüğü misafirlik programıdır.
+          </p>
+        </div>
+      </aside>
+
+      <div class="ghd-auth-card order-1 p-6 sm:p-9 lg:order-2 lg:p-10">
+        <p class="ghd-eyebrow">Hesabınıza giriş</p>
+        <h2
+          class="mt-3 font-['Sora'] text-3xl font-bold tracking-[-0.045em] text-ghd-navy"
         >
-        <o-button
-          tag="router-link"
-          variant="text"
-          :to="{
-            name: RouteName.RESEND_CONFIRMATION,
-            params: { email: credentials.email },
-          }"
-          >{{ t("Didn't receive the instructions?") }}</o-button
-        >
-        <p class="control" v-if="canRegister">
-          <o-button
-            tag="router-link"
-            variant="text"
-            :to="{
-              name: RouteName.REGISTER,
-              query: {
-                default_email: credentials.email,
-                default_password: credentials.password,
-              },
-            }"
-            >{{ t("Create an account") }}</o-button
-          >
+          Tekrar hoş geldiniz.
+        </h2>
+        <p class="mt-3 text-sm leading-relaxed text-ghd-muted">
+          Açık Kapı ilanına başvurmak için e-posta doğrulamalı ve yönetici
+          onaylı üyelik hesabı gerekir.
         </p>
+
+        <o-notification
+          v-if="errorCode === LoginErrorCode.NEED_TO_LOGIN"
+          title="Bilgi"
+          variant="info"
+          :aria-close-label="t('Close')"
+          >{{ t("You need to login.") }}</o-notification
+        >
+        <o-notification
+          v-else-if="errorCode === LoginError.LOGIN_PROVIDER_ERROR"
+          variant="danger"
+          :aria-close-label="t('Close')"
+          >{{
+            t("Error while login with {provider}. Retry or login another way.", {
+              provider: currentProvider,
+            })
+          }}</o-notification
+        >
+        <o-notification
+          v-else-if="errorCode === LoginError.LOGIN_PROVIDER_NOT_FOUND"
+          variant="danger"
+          :aria-close-label="t('Close')"
+          >{{
+            t(
+              "Error while login with {provider}. This login provider doesn't exist.",
+              {
+                provider: currentProvider,
+              }
+            )
+          }}</o-notification
+        >
+        <o-notification
+          :title="t('Error')"
+          variant="danger"
+          v-for="error in errors"
+          :key="error"
+        >
+          {{ error }}
+        </o-notification>
+
+        <form class="ghd-form mt-7" @submit="loginAction" v-if="config?.auth?.databaseLogin">
+          <o-field
+            :label="t('Email')"
+            label-for="email"
+            :message="caseWarningText"
+            :type="caseWarningType"
+          >
+            <o-input
+              aria-required="true"
+              required
+              expanded
+              id="email"
+              type="email"
+              autocomplete="email"
+              v-model="credentials.email"
+            />
+          </o-field>
+
+          <o-field :label="t('Password')" label-for="password">
+            <o-input
+              aria-required="true"
+              id="password"
+              required
+              expanded
+              type="password"
+              autocomplete="current-password"
+              password-reveal
+              v-model="credentials.password"
+            />
+          </o-field>
+
+          <button
+            class="ghd-btn ghd-btn-primary ghd-btn-lg mt-2 w-full"
+            type="submit"
+            :disabled="submitted"
+          >
+            {{ t("Login") }}
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              class="h-4 w-4"
+            >
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </button>
+
+          <div
+            class="mt-5 flex flex-col gap-2 text-sm font-semibold sm:flex-row sm:items-center sm:justify-between"
+          >
+            <router-link
+              class="ghd-link"
+              :to="{
+                name: RouteName.SEND_PASSWORD_RESET,
+                params: { email: credentials.email },
+              }"
+              >{{ t("Reset your password") }}</router-link
+            >
+            <router-link
+              class="ghd-link"
+              :to="{
+                name: RouteName.RESEND_CONFIRMATION,
+                params: { email: credentials.email },
+              }"
+              >{{ t("Didn't receive the instructions?") }}</router-link
+            >
+          </div>
+
+          <p v-if="canRegister" class="mt-6 text-center text-sm text-ghd-muted">
+            Henüz üyeliğiniz yok mu?
+            <router-link
+              class="font-extrabold text-ghd-navy underline decoration-ghd-gold/60 underline-offset-4"
+              :to="{
+                name: RouteName.REGISTER,
+                query: {
+                  default_email: credentials.email,
+                  default_password: credentials.password,
+                },
+              }"
+              >Üyelik başvurusu yapın</router-link
+            >
+          </p>
+        </form>
+
+        <div v-if="config && config?.auth?.oauthProviders?.length > 0" class="mt-6">
+          <auth-providers :oauthProviders="config.auth.oauthProviders" />
+        </div>
       </div>
-    </form>
-    <div v-if="config && config?.auth?.oauthProviders?.length > 0">
-      <auth-providers :oauthProviders="config.auth.oauthProviders" />
     </div>
   </section>
 </template>

@@ -1,28 +1,25 @@
 <template>
-  <header class="ghd-header">
-    <div class="ghd-topline">
-      <div class="container mx-auto flex flex-wrap items-center justify-between gap-2 px-3 py-1.5">
-        <span>GLOBAL HUKUKÇULAR DERNEĞİ · AÇIK KAPI</span>
-        <a :href="GHD_MAIN_SITE_URL" rel="noopener" target="_blank"
-          >globalhukukcular.com</a
-        >
-      </div>
-    </div>
-    <nav class="ghd-navbar" id="navbar">
+  <header class="ghd-header" id="navbar">
+    <nav class="ghd-navbar">
       <div
-        class="container mx-auto flex flex-wrap items-center justify-between gap-3 px-3 py-3"
+        class="mx-auto flex h-[74px] w-full max-w-7xl items-center justify-between gap-4 px-5 sm:px-8"
       >
         <router-link
           :to="{ name: RouteName.HOME }"
           :aria-label="t('Back to homepage')"
           class="flex shrink-0 items-center"
         >
-          <MobilizonLogo />
+          <MobilizonLogo class="max-h-10" />
         </router-link>
 
-        <div class="hidden items-center gap-7 md:flex">
+        <div class="hidden items-center gap-8 lg:flex">
           <router-link class="ghd-nav-link" :to="{ name: RouteName.HOME }"
             >Açık Kapı</router-link
+          >
+          <router-link
+            class="ghd-nav-link"
+            :to="{ name: RouteName.HOME, hash: '#program' }"
+            >Program</router-link
           >
           <router-link
             class="ghd-nav-link"
@@ -32,50 +29,50 @@
           <router-link
             class="ghd-nav-link"
             :to="{ name: RouteName.HOME, hash: '#surec' }"
-            >Nasıl işliyor?</router-link
+            >Süreç</router-link
+          >
+          <router-link
+            class="ghd-nav-link"
+            :to="{ name: RouteName.HOME, hash: '#sss' }"
+            >SSS</router-link
           >
           <router-link class="ghd-nav-link" :to="{ name: RouteName.ABOUT }"
             >Hakkında</router-link
           >
-          <router-link
-            v-if="canRegister"
-            class="ghd-nav-link"
-            :to="{ name: RouteName.REGISTER }"
-            >Üyelik</router-link
-          >
         </div>
 
         <div class="flex items-center gap-2 sm:gap-3">
-          <router-link
-            v-if="!currentUser?.isLoggedIn"
-            class="hidden text-sm font-semibold text-ghd-navy sm:inline-flex"
-            :to="{ name: RouteName.LOGIN }"
-            >{{ t("Login") }}</router-link
-          >
-          <router-link
-            v-if="!currentUser?.isLoggedIn"
-            class="ghd-btn ghd-btn-gold !px-4 !py-2 text-sm"
-            :to="{ name: RouteName.REGISTER }"
-            >Üyelik Başvurusu</router-link
-          >
-          <router-link
-            v-else
-            class="ghd-btn ghd-btn-gold !px-4 !py-2 text-sm"
-            :to="GHD_EVENT_PATH"
-            >Başvur</router-link
-          >
-          <div class="flex gap-2" v-if="currentUser?.isLoggedIn">
+          <template v-if="!currentUser?.isLoggedIn">
+            <router-link
+              class="hidden px-2 py-2 text-sm font-extrabold text-ghd-navy sm:inline-flex"
+              :to="{ name: RouteName.LOGIN }"
+              >{{ t("Login") }}</router-link
+            >
+            <router-link
+              v-if="canRegister"
+              class="ghd-btn ghd-btn-primary !px-5 !py-2.5 text-sm"
+              :to="{ name: RouteName.REGISTER }"
+              >Üyelik başvurusu</router-link
+            >
+          </template>
+
+          <template v-else>
+            <router-link
+              class="ghd-btn ghd-btn-primary !px-5 !py-2.5 text-sm"
+              :to="GHD_EVENT_PATH"
+              >Başvur</router-link
+            >
             <router-link
               :to="{ name: RouteName.CONVERSATION_LIST }"
-              class="relative flex text-sm"
+              class="relative hidden text-sm sm:inline-flex"
               id="conversations-menu-button"
               aria-expanded="false"
             >
               <span class="sr-only">{{ t("Open conversations") }}</span>
-              <Inbox :size="28" />
+              <Inbox :size="24" />
               <span
                 v-show="unreadConversationsCount > 0"
-                class="absolute bottom-0.5 -left-2 bg-primary rounded-full inline-block h-3 w-3 mx-2"
+                class="absolute -left-1 bottom-0.5 mx-2 inline-block h-2.5 w-2.5 rounded-full bg-primary"
               >
               </span>
             </router-link>
@@ -83,41 +80,40 @@
               <template #trigger>
                 <button
                   type="button"
-                  class="flex rounded-full text-sm focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                  class="ghd-avatar-button"
                   id="user-menu-button"
                   aria-expanded="false"
                 >
                   <span class="sr-only">{{ t("Open user menu") }}</span>
-                  <figure class="h-8 w-8" v-if="currentActor?.avatar">
+                  <figure class="h-7 w-7" v-if="currentActor?.avatar">
                     <img
-                      class="rounded-full w-full h-full object-cover"
+                      class="h-full w-full rounded-full object-cover"
                       alt=""
                       :src="currentActor?.avatar.url"
-                      width="32"
-                      height="32"
+                      width="28"
+                      height="28"
                       loading="lazy"
                     />
                   </figure>
-                  <AccountCircle v-else :size="32" />
+                  <AccountCircle v-else :size="26" />
                 </button>
               </template>
 
               <div
-                class="z-50 text-base list-none bg-white rounded divide-y divide-gray-100 dark:bg-zinc-700 dark:divide-gray-600 max-w-xs"
-                position="bottom-left"
+                class="z-50 w-64 overflow-hidden rounded-2xl border border-ghd-navy/10 bg-[#fffdf8] py-2 shadow-2xl"
               >
                 <o-dropdown-item aria-role="listitem">
-                  <div class="px-4">
-                    <span class="block text-sm text-zinc-900 dark:text-white">{{
+                  <div class="px-4 py-2">
+                    <span class="block truncate text-sm font-extrabold text-ghd-navy">{{
                       displayName(currentActor) || currentUser.email
                     }}</span>
                     <span
-                      class="block text-sm font-medium text-zinc-500 truncate dark:text-zinc-400"
+                      class="block truncate text-xs font-semibold text-ghd-muted"
                       v-if="currentUser?.role === ICurrentUserRole.ADMINISTRATOR"
                       >{{ t("Administrator") }}</span
                     >
                     <span
-                      class="block text-sm font-medium text-zinc-500 truncate dark:text-zinc-400"
+                      class="block truncate text-xs font-semibold text-ghd-muted"
                       v-if="currentUser?.role === ICurrentUserRole.MODERATOR"
                       >{{ t("Moderator") }}</span
                     >
@@ -131,27 +127,28 @@
                   @click="changeIdentity(identity)"
                   @keyup.enter="changeIdentity(identity)"
                 >
-                  <div class="flex gap-1 items-center w-full">
+                  <div class="flex w-full items-center gap-2">
                     <div class="flex-none">
-                      <figure class="h-8 w-8" v-if="identity.avatar">
+                      <figure class="h-7 w-7" v-if="identity.avatar">
                         <img
-                          class="rounded-full object-cover h-full"
+                          class="h-full w-full rounded-full object-cover"
                           loading="lazy"
                           :src="identity.avatar.url"
                           alt=""
-                          height="32"
-                          width="32"
+                          height="28"
+                          width="28"
                         />
                       </figure>
-                      <AccountCircle v-else :size="32" />
+                      <AccountCircle v-else :size="28" />
                     </div>
-
                     <div
-                      class="text-base text-zinc-700 dark:text-zinc-100 flex flex-col flex-auto overflow-hidden items-start w-full"
+                      class="flex w-full flex-auto flex-col items-start overflow-hidden text-sm text-ghd-navy"
                     >
-                      <p class="truncate w-full">{{ displayName(identity) }}</p>
+                      <p class="w-full truncate font-semibold">
+                        {{ displayName(identity) }}
+                      </p>
                       <p
-                        class="truncate text-sm w-full"
+                        class="w-full truncate text-xs text-ghd-muted"
                         v-if="identity.preferredUsername"
                       >
                         @{{ identity.preferredUsername }}
@@ -164,8 +161,7 @@
                   tag="router-link"
                   :to="{ name: RouteName.SETTINGS }"
                 >
-                  <span
-                    class="block py-2 px-4 text-sm text-zinc-700 dark:text-zinc-200 dark:hover:text-white"
+                  <span class="block px-4 py-2 text-sm text-ghd-navy"
                     >{{ t("My account") }}</span
                   >
                 </o-dropdown-item>
@@ -175,8 +171,7 @@
                   tag="router-link"
                   :to="{ name: RouteName.ADMIN_DASHBOARD }"
                 >
-                  <span
-                    class="block py-2 px-4 text-sm text-zinc-700 dark:text-zinc-200 dark:hover:text-white"
+                  <span class="block px-4 py-2 text-sm text-ghd-navy"
                     >{{ t("Administration") }}</span
                   >
                 </o-dropdown-item>
@@ -185,82 +180,96 @@
                   @click="performLogout"
                   @keyup.enter="performLogout"
                 >
-                  <span
-                    class="block py-2 px-4 text-sm text-zinc-700 dark:text-zinc-200 dark:hover:text-white"
+                  <span class="block px-4 py-2 text-sm text-ghd-navy"
                     >{{ t("Log out") }}</span
                   >
                 </o-dropdown-item>
               </div>
             </o-dropdown>
-          </div>
+          </template>
+
           <button
             @click="showMobileMenu = !showMobileMenu"
             type="button"
-            class="inline-flex items-center justify-end rounded p-2 text-ghd-navy md:hidden"
+            class="inline-flex items-center justify-center rounded-full border border-ghd-navy/10 bg-white/60 p-2.5 text-ghd-navy lg:hidden"
             aria-controls="mobile-menu-ghd"
             :aria-expanded="showMobileMenu"
             :aria-label="t('Open main menu')"
           >
             <svg
-              class="h-6 w-6"
+              class="h-5 w-5"
               aria-hidden="true"
-              fill="currentColor"
-              viewBox="0 0 20 20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path
-                fill-rule="evenodd"
-                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                clip-rule="evenodd"
-              ></path>
+              <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" />
             </svg>
           </button>
         </div>
       </div>
+
       <div
         id="mobile-menu-ghd"
-        class="border-t border-ghd-line bg-ghd-cream/95 px-3 pb-4 md:hidden"
+        class="ghd-mobile-panel lg:hidden"
         v-show="showMobileMenu"
       >
-        <ul class="flex flex-col gap-1 pt-2">
-          <li>
-            <router-link class="ghd-mobile-link" :to="{ name: RouteName.HOME }"
-              >Açık Kapı</router-link
-            >
-          </li>
-          <li>
+        <div class="mx-auto max-w-7xl px-5 py-4 sm:px-8">
+          <router-link class="ghd-mobile-link" :to="{ name: RouteName.HOME }"
+            >Açık Kapı</router-link
+          >
+          <router-link
+            class="ghd-mobile-link"
+            :to="{ name: RouteName.HOME, hash: '#program' }"
+            >Program</router-link
+          >
+          <router-link
+            class="ghd-mobile-link"
+            :to="{ name: RouteName.HOME, hash: '#ilan' }"
+            >İlan</router-link
+          >
+          <router-link
+            class="ghd-mobile-link"
+            :to="{ name: RouteName.HOME, hash: '#surec' }"
+            >Süreç</router-link
+          >
+          <router-link
+            class="ghd-mobile-link"
+            :to="{ name: RouteName.HOME, hash: '#sss' }"
+            >SSS</router-link
+          >
+          <router-link class="ghd-mobile-link" :to="{ name: RouteName.ABOUT }"
+            >Hakkında</router-link
+          >
+
+          <div class="mt-5 flex flex-col gap-2 pb-2">
+            <template v-if="!currentUser?.isLoggedIn">
+              <router-link
+                class="ghd-btn ghd-btn-primary w-full"
+                :to="{ name: RouteName.LOGIN }"
+                >{{ t("Login") }}</router-link
+              >
+              <router-link
+                v-if="canRegister"
+                class="ghd-btn ghd-btn-gold w-full"
+                :to="{ name: RouteName.REGISTER }"
+                >Üyelik başvurusu</router-link
+              >
+            </template>
             <router-link
-              class="ghd-mobile-link"
-              :to="{ name: RouteName.HOME, hash: '#ilan' }"
-              >İlan</router-link
+              v-else
+              class="ghd-btn ghd-btn-gold w-full"
+              :to="GHD_EVENT_PATH"
+              >İlana başvur</router-link
             >
-          </li>
-          <li>
-            <router-link
-              class="ghd-mobile-link"
-              :to="{ name: RouteName.HOME, hash: '#surec' }"
-              >Nasıl işliyor?</router-link
-            >
-          </li>
-          <li>
-            <router-link class="ghd-mobile-link" :to="{ name: RouteName.ABOUT }"
-              >Hakkında</router-link
-            >
-          </li>
-          <li v-if="canRegister">
-            <router-link class="ghd-mobile-link" :to="{ name: RouteName.REGISTER }"
-              >Üyelik</router-link
-            >
-          </li>
-          <li v-if="!currentUser?.isLoggedIn">
-            <router-link class="ghd-mobile-link" :to="{ name: RouteName.LOGIN }"
-              >{{ t("Login") }}</router-link
-            >
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
+
   <div v-if="currentUser?.id && !currentActor?.id" class="p-5">
     <o-notification variant="warning">
       <div class="flex place-content-between items-center">
@@ -282,7 +291,7 @@
 
 <script lang="ts" setup>
 import MobilizonLogo from "@/components/MobilizonLogo.vue";
-import { GHD_EVENT_PATH, GHD_MAIN_SITE_URL } from "@/ghd/constants";
+import { GHD_EVENT_PATH } from "@/ghd/constants";
 import { ICurrentUserRole } from "@/types/enums";
 import { logout } from "../utils/auth";
 import { displayName, IPerson } from "../types/actor";
